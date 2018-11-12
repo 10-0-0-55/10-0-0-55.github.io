@@ -6,7 +6,7 @@ nav:
     - Home: index.md
     - About: about.md
     - Web:
-        - PHP: php.md
+        - PHP: web/php.md
 
 
 theme:
