@@ -1,8 +1,13 @@
 language: python
+branches:
+    only: mkdocs
+
 install: 
     - pip install mkdocs pymdown-extensions mkdocs-bootstrap
+
 script:
     - mkdocs build -v --clean --strict
+
 deploy:
     provider: pages
     skip_cleanup: true
