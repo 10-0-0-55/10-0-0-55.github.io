@@ -1,0 +1,13 @@
+language: python
+install: 
+    - pip install mkdocs pymdown-extensions mkdocs-bootstrap
+script:
+    - mkdocs build -v --clean --strict
+deploy:
+    provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    local_dir: site
+    target-brach: master
+    on:
+        branch: mkdocs
