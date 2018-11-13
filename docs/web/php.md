@@ -31,3 +31,6 @@ php是最好的语言！
 
 ### extract
 `#!php int extract ( array &$array [, int $flags = EXTR_OVERWRITE [, string $prefix = NULL ]] )`
+``` php
+$a=1;
+```
