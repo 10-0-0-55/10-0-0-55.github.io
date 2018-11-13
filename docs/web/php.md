@@ -160,7 +160,7 @@ echo preg_replace('/(.*)kaibro/e','\\1info()',$a);
 可能利用的特性：
 
 - 如果存在上述格式化字符中不存在的字符则忽略不处理
-### addslashes:
+### addslashes
 过滤的字符：
 
 * NULL (0x0)

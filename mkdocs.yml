@@ -13,7 +13,9 @@ nav:
 
 
 theme:
-    name: bootstrap
+    name: material
+    language: zh
+
     hljs_languages:
         - php
         - c
@@ -21,10 +23,15 @@ theme:
         - python
 
 extra_javascript:
-  - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'
+    - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'
 
+google_analytics:
+    - UA-129115358-1
+    - auto
 markdown_extensions:
     - admonition
+    - toc:
+        permalink: true
     - codehilite:
         guess_lang: false
     - pymdownx.arithmatex
