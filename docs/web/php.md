@@ -22,6 +22,10 @@ php是最好的语言！
     * `++$a` =>`'b'`
     * `$a+1` => 1
 
+## PHP 全局变量
+- `$_GET`会对传入的数据进行URLdecode
+- `$_SERVER['REQUEST_URI']`和`$_SERVER['QUERY_STRING']`则是直接返回
+
 ## PHP函数特性
 ### intval
 * 四舍五入(不存在的截断)
@@ -156,3 +160,19 @@ echo preg_replace('/(.*)kaibro/e','\\1info()',$a);
 可能利用的特性：
 
 - 如果存在上述格式化字符中不存在的字符则忽略不处理
+### addslashes:
+过滤的字符：
+
+* NULL (0x0)
+* `"` (0x22)
+* `'` (0x27)
+* `\` (0x5c)
+
+### file_put_contents
+`int file_put_contents ( string $filename , mixed $data [, int $flags = 0 [, resource $context ]] )`
+
+可以写入数组，绕过字符串过滤的限制
+### spl_autoload_register
+不指定参数会自动载入目录下`.inc`和`.php`中的class
+
+### 
