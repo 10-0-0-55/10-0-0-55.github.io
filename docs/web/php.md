@@ -3,6 +3,7 @@
 php是最好的语言！
 
 ## PHP弱类型
+![](../statics/php_equiv.png)
 
 * `var_dump('0xABCdef' == ' 0xABCdef');`
     * true (Output for hhvm-3.18.5 - 3.22.0, 7.0.0 - 7.2.0rc4: false)
@@ -21,5 +22,12 @@ php是最好的语言！
     * `++$a` =>`'b'`
     * `$a+1` => 1
 
-## PHP特性
+## PHP函数特性
+### intval
+* 四舍五入(不存在的截断)
+    * `var_dump(intval('5278.78'))` => 5278
+* `intval(012)` => 10
+* `intval("012")` => 12
 
+### extract
+`#!php int extract ( array &$array [, int $flags = EXTR_OVERWRITE [, string $prefix = NULL ]] )`

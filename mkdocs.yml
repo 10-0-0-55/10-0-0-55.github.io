@@ -1,6 +1,8 @@
 site_name: 10.0.0.55 CTF Docs
 site_url: http://10-0-0-55.github.io/
 repo_url: https://github.com/10-0-0-55/10-0-0-55.github.io
+strict: true
+remote_branch: master
 
 nav:
     - Home: index.md
@@ -11,11 +13,19 @@ nav:
 
 theme:
     name: bootstrap
+#    hljs_languages:
+#        - php
+#        - c
+#        - c++
+#        - python
 
 extra_javascript:
   - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'
 
 markdown_extensions:
+    - admonition
+    - codehilite:
+        guess_lang: false
     - pymdownx.arithmatex
     - pymdownx.betterem:
         smart_enable: all
