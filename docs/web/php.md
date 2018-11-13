@@ -68,7 +68,7 @@ php是最好的语言！
 * 变量名中有` `（空格）或`.`（点），会被替换成`_`（下划线）
 
 
-## parse_url
+### parse_url
 
 - 在处理URL时会有问题
 - `parse_url('/a.php?id=1')`
@@ -112,3 +112,20 @@ php是最好的语言！
         ```
     - 其他： false
 
+
+### preg_replace
+
+- `mixed preg_replace ( mixed $pattern , mixed $replacement , mixed $subject [, int $limit = -1 [, int &$count ]] )`
+    - 搜寻`$subject`中匹配的`$pattern`，并用`$replacement`替换
+- 第一个参数用`/e`修饰符，`$replacement`会被当成PHP code执行
+    - 必须有匹配到才会执行
+    - PHP 5.5.0起，會產生`E_DEPRECATED`错误
+    - PHP 7.0.0不再支援，用`preg_replace_callback()`代替
+
+example:
+
+``` php
+<?php
+$a='phpkaibro';
+echo preg_replace('/(.*)kaibro/e','\\1info()',$a);
+```

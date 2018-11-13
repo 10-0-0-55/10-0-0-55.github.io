@@ -14,11 +14,11 @@ nav:
 
 theme:
     name: bootstrap
-#    hljs_languages:
-#        - php
-#        - c
-#        - c++
-#        - python
+    hljs_languages:
+        - php
+        - c
+        - c++
+        - python
 
 extra_javascript:
   - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'
