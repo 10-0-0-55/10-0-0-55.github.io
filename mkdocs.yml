@@ -3,7 +3,7 @@ site_url: http://10-0-0-55.github.io/
 repo_url: https://github.com/10-0-0-55/10-0-0-55.github.io
 strict: true
 remote_branch: master
-edit_uri: 'blob/master/docs/'
+edit_uri: 'tree/mkdocs/docs'
 
 nav:
     - Home: index.md
