@@ -10,6 +10,8 @@ nav:
     - About: about.md
     - Web:
         - PHP: web/php.md
+    - Crypto:
+        - Math: crypto/math.md
 
 
 theme:
