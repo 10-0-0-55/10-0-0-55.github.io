@@ -76,7 +76,7 @@ php是最好的语言！
 
 - 在处理URL时会有问题
 - `parse_url('/a.php?id=1')`
-    
+  
     ```
     array(2) {
       ["host"]=>
@@ -86,16 +86,19 @@ php是最好的语言！
     }
     ```
 - `parse_url('//a/b')`
+
     - host: `a`
 - `parse_url('..//a/b/c:80')`
     - host: `..`
     - port: `80`
     - path: `//a/b/c:80`
 - `parse_url('///a.php?id=1')`
+
     - false
 
 - `parse_url('/a.php?id=1:80')`
      - PHP < 7.0.0
+
          - `false`
      - PHP >= 7.0.0
        ```
@@ -175,4 +178,51 @@ echo preg_replace('/(.*)kaibro/e','\\1info()',$a);
 ### spl_autoload_register
 不指定参数会自动载入目录下`.inc`和`.php`中的class
 
-### 
+### create_function
+
+`string create_function ( string $args , string $code )`
+
+demo:
+
+```php
+$fun = create_function('$a', 'return $a + 1;');
+$fun(1);
+```
+
+## PHP shell相关
+
+### exec
+
+`string exec ( string $command [, array &$output [, int &$return_var ]] )`
+
+执行`$command`，返回执行结果的最后一行。把全部结果作为数组存在`$output`，把返回值存到`$return_val`中。
+
+### paththru
+
+`void passthru ( string $command [, int &$return_var ] )`
+
+执行`$command`， 打印原始结果
+
+### system
+
+`string system ( string $command [, int &$return_var ] )`
+
+执行`$command`， 打印结果
+
+成功则返回命令输出的最后一行，失败则返回 **FALSE**
+
+### shell_exec
+
+`string shell_exec ( string $cmd )`
+
+执行`$cmd`返回输出字符串
+
+```php
+$rt_val = `ls -a`; //效果相同
+```
+
+### escapeshellarg
+
+`string escapeshellarg ( string $arg )`
+
+把`$arg`安排上单引号
