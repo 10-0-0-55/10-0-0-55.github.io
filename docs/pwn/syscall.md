@@ -4,7 +4,7 @@
 
 ### 系统调用号对应的表
 
-[syscall] (http://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/)
+[syscall](http://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/)
 
 ### 系统调用时更改的寄存器
 
@@ -67,4 +67,4 @@ start :
 ```
 最开始的时候由于输入限制只能 10 byte，因此控制不了 rsi，可以通过 syscall 找到之前写入的地址，运用 edx 只取 rdx 的低 32 位，jmp (-127 ~ +128) 的值进行调用 SYS_read
 
-[syscall Operation](https://github.com/HJLebbink/asm-dude/wiki/SYSCALL)
+[Syscall Operation](https://github.com/HJLebbink/asm-dude/wiki/SYSCALL)
