@@ -11,8 +11,17 @@ nav:
     - Web:
         - PHP: 
             - 代码审计: web/php/audit.md
+            - 文件包含: web/php/LFI.md
+            - 反序列化: web/php/serialize.md
+        - Flask:
+            - 模板注入: web/flask/tpl.md
+
     - Crypto:
         - Math: crypto/math.md
+        - RSA:
+            - CopperSmith: crypto/RSA/CopperSmith.md
+        - 数字签名:
+            - DSA: crypto/sign/DSA.md
 
 
 theme:
