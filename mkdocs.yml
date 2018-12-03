@@ -22,7 +22,8 @@ nav:
             - CopperSmith: crypto/RSA/CopperSmith.md
         - 数字签名:
             - DSA: crypto/sign/DSA.md
-
+    - Pwn:
+        - syscall: pwn/syscall.md
 
 theme:
     name: material
