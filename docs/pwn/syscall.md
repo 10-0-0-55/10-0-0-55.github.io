@@ -4,7 +4,8 @@
 
 ### 系统调用号对应的表
 
-[syscall](http://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/)
+[syscall64](https://syscalls64.paolostivanin.com/
+[syscall32](https://syscalls32.paolostivanin.com/)
 
 ### 系统调用时更改的寄存器
 
