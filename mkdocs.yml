@@ -14,7 +14,7 @@ nav:
             - 文件包含: web/php/LFI.md
             - 反序列化: web/php/serialize.md
         - Flask:
-            - 模板注入: web/flask/tpl.md
+            - 模板注入: web/flask/ssti.md
 
     - Crypto:
         - Math: crypto/math.md
