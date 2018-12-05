@@ -12,9 +12,12 @@ nav:
         - PHP: 
             - 代码审计: web/php/audit.md
             - 文件包含: web/php/LFI.md
-            - 反序列化: web/php/serialize.md
+            - 反序列化相关: web/php/serialize.md
         - Flask:
-            - 模板注入: web/flask/ssti.md
+            - 服务端模板注入: web/flask/ssti.md
+            - session解密: web/flask/session.md
+        - SSRF: web/ssrf.md
+        - XXE: web/xxe.md
 
     - Crypto:
         - Math: crypto/math.md
