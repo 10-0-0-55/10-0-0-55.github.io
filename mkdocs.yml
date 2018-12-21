@@ -24,6 +24,7 @@ nav:
             - DSA: crypto/sign/DSA.md
     - Pwn:
         - syscall: pwn/syscall.md
+        - heap/unsorted bin: pwn/unsorted-bin.md
 
 theme:
     name: material
