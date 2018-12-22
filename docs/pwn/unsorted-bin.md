@@ -34,7 +34,7 @@ _int_malloc (mstate av, size_t bytes)       // mstate 为 main_arena 结构体
 		{
 			bck = victim->bk;               // victim 为将被从 unsorted bin 链上取下来的那一块
 			size = chunksize(victim);
-			mchunkptr = next = chunk_at_offset (victim, size);
+			mchunkptr next = chunk_at_offset (victim, size);
 			
 			...
 			if (__glibc_unlikely (bck->fd != victim)
@@ -51,7 +51,7 @@ _int_malloc (mstate av, size_t bytes)       // mstate 为 main_arena 结构体
 			{...}
 			
 			/* remove from unsorted list */
-			if (_glibc_unlikely (bck->fd != victim))
+			if (__glibc_unlikely (bck->fd != victim))
 			  malloc_printerr("malloc(): corrupted unsorted chunks 3");
 			unsorted_chunks (av)->bk = bck; 
 			bck->fd = unsorted_chunks (av);
@@ -121,7 +121,7 @@ _int_malloc (mstate av, size_t bytes)       // mstate 为 main_arena 结构体
 
 上述代码中 // 注释的为笔者加的注释，/* */ 为代码中原生注释，英文写的 // 为笔者为便于理解 unsorted bin 的大框架简写了代码中原生注释 <br/>
 
-在笔者看来，unsorted bin 中取下 victim 那一块时 ，victim 的 bk 可以称得上是 unsorted bin malloc 的发起点，相反 victim 的 fd 甚至基本毫无提及。在检测很少的 unsorted bin 的 malloc 的，如果能修改 free 掉的 unsorted bin 的 bk，将 unsorted bin 的 bk 改成 目标地址-0x10，那么就能在 fake_bk+0x10 的地址上写上 (main arena+88) 的值，比如将 global_max_fast 的值改大，则之后的 chunk 的 malloc 和 free 皆变成了 fastbin 的 malloc 和 free，但是 unsorted bin 的机制基本可以说是废掉了，再使用便会 crash。<br/>
+在笔者看来，unsorted bin 中取下 victim 那一块时 ，victim 的 bk 可以称得上是 unsorted bin malloc 的发起点，相反 victim 的 fd 甚至基本毫无提及。在检测很少的 unsorted bin 的 malloc 的(基本上检测就只有 `check(victim->bk -> fd == victim)` 但是不知道为什么不相等，这条检测也过了)，如果能修改 free 掉的 unsorted bin 的 bk，将 unsorted bin 的 bk 改成 目标地址-0x10，那么就能在 fake_bk+0x10 的地址上写上 (main arena+88) 的值，比如将 global_max_fast 的值改大，则之后的 chunk 的 malloc 和 free 皆变成了 fastbin 的 malloc 和 free，但是 unsorted bin 的机制基本可以说是废掉了，再使用便会 crash。<br/>
 
 主流的两种 unsorted bin attack ，一种是更改 global_max_fast 另一种是 house of orange 中更改 _IO_list_all (这个我还没搞懂，留坑=.=) <br/>
 
