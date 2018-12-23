@@ -125,6 +125,8 @@ _int_malloc (mstate av, size_t bytes)       // mstate 为 main_arena 结构体
 
 主流的两种 unsorted bin attack ，一种是更改 global_max_fast 另一种是 house of orange 中更改 _IO_list_all (这个我还没搞懂，留坑=.=) <br/>
 
+学长说还有一种比较典型的 attack , house of roman 也是用的这个办法，略微看了一下，基本思想就是，能够将 main_arena+88 写入 `__malloc_hook` 然后进行更改后3个字节，触发 `malloc_printerr` 从而 getshell (留坑)<br/>
+
 ## free
 ```
 __int_free (mstate av, mchunkptr p, int have_lock)
