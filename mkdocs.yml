@@ -26,7 +26,7 @@ nav:
         - 数字签名:
             - DSA: crypto/sign/DSA.md
         - 分组加密相关:
-            - padding: crypto/padding.md
+            - padding: crypto/block/padding.md
     - Pwn:
         - syscall: pwn/syscall.md
         - heap/unsorted bin: pwn/unsorted-bin.md
