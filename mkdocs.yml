@@ -28,6 +28,7 @@ nav:
         - 分组加密相关:
             - padding: crypto/block/padding.md
     - Pwn:
+        - stack hijack: pwn/stack-hijack.md
         - syscall: pwn/syscall.md
         - heap/unsorted bin: pwn/unsorted-bin.md
 
