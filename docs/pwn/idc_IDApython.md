@@ -301,8 +301,11 @@ $ grep -H "GetMemberName" ./*.py
 
 ## 参考
 > 脚本 | https://blog.csdn.net/ojshilu/article/details/12905405
+
 > 博客 | https://blog.csdn.net/qq1084283172/article/details/64130118 
+
 > part1-6 | https://unit42.paloaltonetworks.com/using-idapython-to-make-your-life-easier-part-1/
+
 > 官方文档| https://www.hex-rays.com/products/ida/support/idapython_docs/
 
 
