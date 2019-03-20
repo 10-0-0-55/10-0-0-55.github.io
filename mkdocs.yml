@@ -31,7 +31,7 @@ nav:
         - stack hijack: pwn/stack-hijack.md
         - syscall: pwn/syscall.md
         - heap/unsorted bin: pwn/unsorted-bin.md
-        - IDA idc/IDApython: pwn/idc_IDApython.md
+        - IDA IDApython: pwn/IDApython.md
 
 theme:
     name: material
