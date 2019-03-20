@@ -1,4 +1,4 @@
-# IDA 强大的插件 idc 和 IDApython 
+# IDA 强大的插件 IDApython 
 
 idc 和 IDApython 帮助分析者利用与 IDA 进行交互，得到自动化分析程序的结果
 
@@ -34,6 +34,7 @@ if __name__ == "__main__":
 打印全部函数的名字
 
 ```
+# -*- coding: utf-8 -*-
 from idaapi import *
 from idautils import *
 import idc
@@ -85,8 +86,6 @@ $ ./ida.exe -c -S".\Vangelis\test.py" ~/Desktop/Analysis_File/rop/rop
 ```
 同时在脚本里面也是要用映射过去的地址，所以用的 `Z:\\home\\vangelis\\Desktop\\rop_fun_output.txt` 
 
-后来我又神经，在脚本里面写注释，然后被 wine 里面调 IDA 再调 python 说脚本里面的字符有问题，应该是编码格式问题，就把注释全删了
-
 后来再改进一下，变成了 `nohup ./ida.exe -c -S".\Vangelis\test.py" ~/Desktop/Analysis_File/rop/rop > outfile 2>&1 &` 把标准输出和错误全部输出到 outfile 文件中
 
 再后来觉得每次开 IDA 十分不舒服就查了一下运行 IDA 的参数，最后用的 `-B -S`
@@ -97,6 +96,7 @@ $ ./ida.exe -c -S".\Vangelis\test.py" ~/Desktop/Analysis_File/rop/rop
 寻找危险函数的被引用的地址
 
 ```
+# -*- coding: utf-8 -*-
 from idaapi import *
 from idautils import *
 import idc
@@ -338,6 +338,103 @@ PatchByte(ea, value) PatchWord(ea, value) PatchDword(ea, value)
 取当前地址
 here() ScreenEA()
 
+```
+
+### 实例
+下午写了一个用来查某些函数中的库函数调用的脚本
+该查询了一下 main 函数和 main 函数开启线程中函数的调用，发现了一个很强的函数 `GetDisasm()` 可以将 IDA 中分析结果也打印出来，意思就是 比如 `call esi` ，在`GetDisasm()`会打印`call esi ; Function` 这样写分析脚本起来就很容易，以下脚本是放在 IDA 中跑的，所以没加 `idc.Wait()` 和 `idc.Exit(0)`
+
+实例的题目我放在 github 上面了
+[Lab05](https://github.com/Vang3lis/Windows-malware/tree/master/Lab_03/Chapter_5L)
+```
+# -*- coding: utf-8 -*-
+
+from idaapi import *
+from idautils import *
+import idc
+
+# github idapython ex_import.py
+def Enum_Import_WinApi():
+    def imp_cb(ea, name, offset):
+        if name:
+            WinApiDir[ea] = name
+        # True -> Continue enumeration
+        # False -> Stop enumeration
+        return True
+
+    WinApiDir = {}
+    WinDll = ['']
+    nimps = get_import_module_qty()
+    for i in xrange(0, nimps):
+        name = get_import_module_name(i)
+
+        enum_import_names(i, imp_cb)
+
+    return WinApiDir
+
+def AddAddr(CalledAddr, CallWinApi, WinApiDir, CalledName=""):
+    if CalledAddr != 0:
+        CalledName = WinApiDir[CalledAddr]
+
+    if CalledName not in CallWinApi:    # 如果 CallWinApi 里面没有，就添加
+        CallWinApi.append(CalledName)
+
+'''
+def SearchFunc(addr):                   # 原本想用作向上查找 mov 的函数，但是发现 GetDisasm 是个神仙函数
+    return
+'''
+
+def SearchWinApi(ea, CallWinApi, WinApiDir):
+    for addr in FuncItems(ea):
+        if GetMnem(addr) == "call":                 # 判断指令是否为 call
+            CalledAddr = GetOperandValue(addr, 0)        # 得到被 call 函数地址
+            #  print(GetDisasm(addr))
+            #  print(GetOpnd(addr, 0))
+
+            if CalledAddr in WinApiDir.keys():      # 如果函数地址在枚举的 WinApiDir 里面就尝试添加
+                AddAddr(CalledAddr, CallWinApi, WinApiDir)
+
+            else:                                   # 系统函数跳转一步才到结果 例如 strlen: jmp ds:__imp_strlen
+                if GetMnem(CalledAddr) == "jmp":
+                    CalledAddr = GetOperandValue(CalledAddr, 0)
+                    AddAddr(CalledAddr, CallWinApi, WinApiDir)
+
+                else :
+                    op = GetOpnd(addr, 0)
+                    if op == 'esi' or op == 'ebx' or op == 'eax' or op == 'ebp':
+                        '''
+                        可以不必这么写，因为 GetDisasm 会将 IDA 分析的 esi ebx eax ebp 打印出来
+                        if op == 'ebp':             # 查看源码发现 op == ebp 时 只有调用 closesocket 的时候
+                            if 'closesocket' in CallWinApi:
+                                return
+                            else :
+                                CallWinApi.append('closesocket')
+                        else :                      # 向上查找 mov 指令
+                        '''
+                        disasm = GetDisasm(addr)
+                        CalledName = disasm[disasm.find(";")+1:]
+                        AddAddr(0, CallWinApi, WinApiDir, CalledName)
+
+
+
+if __name__ == "__main__":
+    Main = [0x1000D02E]
+    sub_func = [0x10001074, 0x10001365, 0x10001656]
+    WinApiDir = {}
+    CallWinApi = []
+    flag = 1
+
+    WinApiDir = Enum_Import_WinApi()
+    #  print(WinApiDir)
+
+    if flag :
+        for ea in Main:
+            SearchWinApi(ea, CallWinApi, WinApiDir)
+    else:
+        for ea in sub_func:
+            SearchWinApi(ea, CallWinApi, WinApiDir)
+
+    print(CallWinApi)
 ```
 
 ## 参考
