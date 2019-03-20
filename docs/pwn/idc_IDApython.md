@@ -297,15 +297,53 @@ $ grep -H "GetMemberName" ./*.py
 5175   │     Get type of a member
 ```
 
+#### 其他函数
+```
+取值
+Byte(ea) Word(ea) Dword(ea) Qword(ea) GetFloat(ea) GetDouble(ea)
+GetManyBytes(ea, size, use_dbg = False)
+GetString(ea, length = -1, strtype = STRTYPE_C)
 
+GetFlags(ea).isCode() / .isData() / .isUnknown()
+
+数据或代码的 to / from
+DataRefsTo(ea) DataRefsFrom(ea) | XrefsTo(ea, flag=0) XrefsFrom(ea, flag=0) / CodeRefsTo(ea, flag=0) CodeRefsFrom(ea, flag=0) 
+
+分割函数中指令地址
+FuncItems(start) 一般和 GetDisasm() 一起使用
+
+ 317   │ def FuncItems(start):
+ 318   │     """
+ 319   │     Get a list of function items
+ 320   │ 
+ 321   │     @param start: address of the function
+ 322   │ 
+ 323   │     @return: ea of each item in the function
+ 324   │     """
+ 325   │     func = ida_funcs.get_func(start)
+ 326   │     if not func:
+ 327   │         return
+ 328   │     fii = ida_funcs.func_item_iterator_t()
+ 329   │     ok = fii.set(func)
+ 330   │     while ok:
+ 331   │         yield fii.current()
+ 332   │         ok = fii.next_code()
+
+反汇编
+GetDisasm(ea)
+
+Patch 文件
+PatchByte(ea, value) PatchWord(ea, value) PatchDword(ea, value)
+
+取当前地址
+here() ScreenEA()
+
+```
 
 ## 参考
-> 脚本 | https://blog.csdn.net/ojshilu/article/details/12905405
-
-> 博客 | https://blog.csdn.net/qq1084283172/article/details/64130118 
-
-> part1-6 | https://unit42.paloaltonetworks.com/using-idapython-to-make-your-life-easier-part-1/
-
-> 官方文档| https://www.hex-rays.com/products/ida/support/idapython_docs/
+> 脚本 | https://blog.csdn.net/ojshilu/article/details/12905405 <br/>
+> 博客 | https://blog.csdn.net/qq1084283172/article/details/64130118 <br/>
+> part1-6 | https://unit42.paloaltonetworks.com/using-idapython-to-make-your-life-easier-part-1/ <br/>
+> 官方文档| https://www.hex-rays.com/products/ida/support/idapython_docs/ <br/>
 
 
