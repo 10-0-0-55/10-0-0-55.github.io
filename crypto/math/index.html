@@ -1,0 +1,982 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="http://10-0-0-55.github.io/crypto/math/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="ja">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.1.0">
+    
+    
+      
+        <title>Math - 10.0.0.55 CTF Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.982221ab.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.01ccdecf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-129115358-1", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="1" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="http://10-0-0-55.github.io/" title="10.0.0.55 CTF Docs" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              10.0.0.55 CTF Docs
+            </span>
+            <span class="md-header-nav__topic">
+              Math
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/10-0-0-55/10-0-0-55.github.io/" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="http://10-0-0-55.github.io/" title="10.0.0.55 CTF Docs" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    10.0.0.55 CTF Docs
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/10-0-0-55/10-0-0-55.github.io/" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../about/" title="About" class="md-nav__link">
+      About
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Web
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Web
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1">
+    
+    <label class="md-nav__link" for="nav-3-1">
+      PHP
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        PHP
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/php/audit/" title="代码审计" class="md-nav__link">
+      代码审计
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/php/LFI/" title="文件包含" class="md-nav__link">
+      文件包含
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/php/serialize/" title="反序列化相关" class="md-nav__link">
+      反序列化相关
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
+    
+    <label class="md-nav__link" for="nav-3-2">
+      Flask
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-2">
+        Flask
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/flask/ssti/" title="服务端模板注入" class="md-nav__link">
+      服务端模板注入
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/flask/session/" title="session解密" class="md-nav__link">
+      session解密
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/ssrf/" title="SSRF" class="md-nav__link">
+      SSRF
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/xxe/" title="XXE" class="md-nav__link">
+      XXE
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      Crypto
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Crypto
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Math
+      </label>
+    
+    <a href="./" title="Math" class="md-nav__link md-nav__link--active">
+      Math
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" title="基本模运算" class="md-nav__link">
+    基本模运算
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gcd" title="拓展GCD" class="md-nav__link">
+    拓展GCD
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" title="逆元" class="md-nav__link">
+    逆元
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#crt" title="中国剩余定理 CRT" class="md-nav__link">
+    中国剩余定理 CRT
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" title="欧拉定理" class="md-nav__link">
+    欧拉定理
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" title="费马小定理" class="md-nav__link">
+    费马小定理
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-2" type="checkbox" id="nav-4-2">
+    
+    <label class="md-nav__link" for="nav-4-2">
+      RSA
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-2">
+        RSA
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../RSA/CopperSmith/" title="CopperSmith" class="md-nav__link">
+      CopperSmith
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-3" type="checkbox" id="nav-4-3">
+    
+    <label class="md-nav__link" for="nav-4-3">
+      数字签名
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-3">
+        数字签名
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../sign/DSA/" title="DSA" class="md-nav__link">
+      DSA
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-4" type="checkbox" id="nav-4-4">
+    
+    <label class="md-nav__link" for="nav-4-4">
+      分组加密相关
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-4">
+        分组加密相关
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../block/padding/" title="padding" class="md-nav__link">
+      padding
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Pwn
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Pwn
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../pwn/stack-hijack/" title="stack hijack" class="md-nav__link">
+      stack hijack
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../pwn/syscall/" title="syscall" class="md-nav__link">
+      syscall
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../pwn/unsorted-bin/" title="heap/unsorted bin" class="md-nav__link">
+      heap/unsorted bin
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../pwn/IDApython/" title="IDA IDApython" class="md-nav__link">
+      IDA IDApython
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" title="基本模运算" class="md-nav__link">
+    基本模运算
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gcd" title="拓展GCD" class="md-nav__link">
+    拓展GCD
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" title="逆元" class="md-nav__link">
+    逆元
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#crt" title="中国剩余定理 CRT" class="md-nav__link">
+    中国剩余定理 CRT
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" title="欧拉定理" class="md-nav__link">
+    欧拉定理
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" title="费马小定理" class="md-nav__link">
+    费马小定理
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/10-0-0-55/10-0-0-55.github.io/tree/mkdocs/docs/crypto/math.md" title="编辑此页" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="_1">密码学数学基础知识<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">基本模运算<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<div>
+<div class="MathJax_Preview">
+(a+b)\bmod n = ((a\bmod n)+(b\bmod n)) \bmod n\\
+(a-b)\bmod n = ((a\bmod n)-(b\bmod n)) \bmod n\\
+(a\times b)\bmod n = ((a\bmod n)\times(b\bmod n)) \bmod n
+</div>
+<script type="math/tex; mode=display">
+(a+b)\bmod n = ((a\bmod n)+(b\bmod n)) \bmod n\\
+(a-b)\bmod n = ((a\bmod n)-(b\bmod n)) \bmod n\\
+(a\times b)\bmod n = ((a\bmod n)\times(b\bmod n)) \bmod n
+</script>
+</div>
+<p>如果有<span><span class="MathJax_Preview">a_1\equiv b_1\pmod n,a_2\equiv b_2\pmod n</span><script type="math/tex">a_1\equiv b_1\pmod n,a_2\equiv b_2\pmod n</script></span>， 那么就有：
+$$
+a_1+a_2\equiv b_1+b_2\pmod n\\
+a_1-a_2\equiv b_1-b_2\pmod n\\
+a_1\times a_2\equiv b_1\times b_2\pmod n
+$$</p>
+<h2 id="gcd">拓展GCD<a class="headerlink" href="#gcd" title="Permanent link">&para;</a></h2>
+<p><code>(g,s,k)=ex_gcd(a, b)</code></p>
+<p>其中<code>g=gcd(a,b)</code>，<code>sa+kb=g</code></p>
+<p>当ab互质时，<code>g=1</code>，存在<code>(s,k)</code>可以线性表出<code>sa+kb=1</code></p>
+<h2 id="_3">逆元<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p><span><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span>在<span><span class="MathJax_Preview">\bmod n</span><script type="math/tex">\bmod n</script></span>下的逆元记为<span><span class="MathJax_Preview">a^{-1}\pmod n</span><script type="math/tex">a^{-1}\pmod n</script></span>，如果<span><span class="MathJax_Preview">a^{-1}\pmod n</span><script type="math/tex">a^{-1}\pmod n</script></span>为<span><span class="MathJax_Preview">a\pmod n</span><script type="math/tex">a\pmod n</script></span>的逆元，那么有<span><span class="MathJax_Preview">a\times a^{-1}\equiv 1\pmod n</span><script type="math/tex">a\times a^{-1}\equiv 1\pmod n</script></span>.</p>
+<p>如果要求<span><span class="MathJax_Preview">a^{-1}\pmod n</span><script type="math/tex">a^{-1}\pmod n</script></span>，有<span><span class="MathJax_Preview">a\times a^{-1}\pmod n</span><script type="math/tex">a\times a^{-1}\pmod n</script></span></p>
+<p>进一步<span><span class="MathJax_Preview">a\times a^{-1}+kn=1</span><script type="math/tex">a\times a^{-1}+kn=1</script></span>，所以要求<span><span class="MathJax_Preview">a,n</span><script type="math/tex">a,n</script></span>线性表出1，要求<span><span class="MathJax_Preview">a,n</span><script type="math/tex">a,n</script></span>互质。</p>
+<p>所以存在<span><span class="MathJax_Preview">a^{-1}\pmod n</span><script type="math/tex">a^{-1}\pmod n</script></span>的充要条件是<span><span class="MathJax_Preview">gcd(a, n)=1</span><script type="math/tex">gcd(a, n)=1</script></span>，然后用拓展GCD算法求算<span><span class="MathJax_Preview">a^{-1}\pmod n</span><script type="math/tex">a^{-1}\pmod n</script></span></p>
+<h2 id="crt">中国剩余定理 CRT<a class="headerlink" href="#crt" title="Permanent link">&para;</a></h2>
+<p>问题：</p>
+<blockquote>
+<p>有物不知其数，三三数之剩二，五五数之剩三，七七数之剩二。问物几何?</p>
+</blockquote>
+<p>形式化问题：
+$$
+\begin{cases}
+x\equiv q_1\pmod {p_1}\\
+x\equiv q_2\pmod {p_2}\\
+\dots\\
+x\equiv q_n\pmod {p_n}
+\end{cases}
+$$
+解法：先定义一个<span><span class="MathJax_Preview">w_1=5\times7\times[(5\times7)^{-1}\pmod {3}]</span><script type="math/tex">w_1=5\times7\times[(5\times7)^{-1}\pmod {3}]</script></span></p>
+<p><span><span class="MathJax_Preview">w_1</span><script type="math/tex">w_1</script></span>有这样几点性质：
+$$
+w_1\equiv1\pmod 3\\
+w_1\equiv0\pmod 5\\
+w_1\equiv0\pmod 7
+$$
+我们构造类似的<span><span class="MathJax_Preview">w_2,w_3</span><script type="math/tex">w_2,w_3</script></span></p>
+<p><span><span class="MathJax_Preview">w_2=3\times7\times[(3\times7)^{-1}\pmod 5]</span><script type="math/tex">w_2=3\times7\times[(3\times7)^{-1}\pmod 5]</script></span></p>
+<p><span><span class="MathJax_Preview">w_3=3\times5\times[(3\times 5)^{-1}\pmod 7]</span><script type="math/tex">w_3=3\times5\times[(3\times 5)^{-1}\pmod 7]</script></span></p>
+<p>就有<span><span class="MathJax_Preview">x\equiv w_1q_1+w_2q_2+w_3q_3\pmod{p_1p_2p_3}</span><script type="math/tex">x\equiv w_1q_1+w_2q_2+w_3q_3\pmod{p_1p_2p_3}</script></span>满足x的要求</p>
+<p>我们给出更形式化的解题过程：
+$$
+w_k=\prod_{i\neq k}p_i[(\prod_{i\neq k}p_i)^{-1}\pmod {p_k}]
+$$
+<span><span class="MathJax_Preview">s_n</span><script type="math/tex">s_n</script></span>有这样的性质：
+$$
+\begin{cases}
+s_k\equiv 1\pmod {p_k}\\
+s_k\equiv 0\pmod {p_i, i\neq k}
+\end{cases}
+$$</p>
+<div>
+<div class="MathJax_Preview">
+x\equiv \displaystyle \sum_{k=1}^n\{q_k\displaystyle\prod_{i\neq k}p_i[(\displaystyle\prod_{i\neq k}p_i)^{-1}\pmod {p_k}]\}\pmod {\displaystyle\prod_{i=1}^kp_i}
+</div>
+<script type="math/tex; mode=display">
+x\equiv \displaystyle \sum_{k=1}^n\{q_k\displaystyle\prod_{i\neq k}p_i[(\displaystyle\prod_{i\neq k}p_i)^{-1}\pmod {p_k}]\}\pmod {\displaystyle\prod_{i=1}^kp_i}
+</script>
+</div>
+<h2 id="_4">欧拉定理<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>如果<span><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span>与<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>互质，那么：
+$$
+a^{\phi(n)}\equiv 1\pmod n
+$$</p>
+<h2 id="_5">费马小定理<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>欧拉定理的特殊形式， 当<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>为质数时：
+$$
+a^{n-1}\equiv1\pmod n
+$$</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../../web/xxe/" title="XXE" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  后退
+                </span>
+                XXE
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../RSA/CopperSmith/" title="CopperSmith" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  前进
+                </span>
+                CopperSmith
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.2ba8dec4.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+                <script src="../../assets/javascripts/lunr/tinyseg.js"></script>
+              
+              
+                <script src="../../assets/javascripts/lunr/lunr.ja.js"></script>
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1465 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="http://10-0-0-55.github.io/pwn/IDApython/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="ja">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.1.0">
+    
+    
+      
+        <title>IDA IDApython - 10.0.0.55 CTF Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.982221ab.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.01ccdecf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-129115358-1", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#ida-idapython" tabindex="1" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="http://10-0-0-55.github.io/" title="10.0.0.55 CTF Docs" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              10.0.0.55 CTF Docs
+            </span>
+            <span class="md-header-nav__topic">
+              IDA IDApython
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/10-0-0-55/10-0-0-55.github.io/" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="http://10-0-0-55.github.io/" title="10.0.0.55 CTF Docs" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    10.0.0.55 CTF Docs
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/10-0-0-55/10-0-0-55.github.io/" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../about/" title="About" class="md-nav__link">
+      About
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Web
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Web
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1">
+    
+    <label class="md-nav__link" for="nav-3-1">
+      PHP
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        PHP
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/php/audit/" title="代码审计" class="md-nav__link">
+      代码审计
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/php/LFI/" title="文件包含" class="md-nav__link">
+      文件包含
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/php/serialize/" title="反序列化相关" class="md-nav__link">
+      反序列化相关
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
+    
+    <label class="md-nav__link" for="nav-3-2">
+      Flask
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-2">
+        Flask
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/flask/ssti/" title="服务端模板注入" class="md-nav__link">
+      服务端模板注入
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/flask/session/" title="session解密" class="md-nav__link">
+      session解密
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/ssrf/" title="SSRF" class="md-nav__link">
+      SSRF
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/xxe/" title="XXE" class="md-nav__link">
+      XXE
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Crypto
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Crypto
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crypto/math/" title="Math" class="md-nav__link">
+      Math
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-2" type="checkbox" id="nav-4-2">
+    
+    <label class="md-nav__link" for="nav-4-2">
+      RSA
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-2">
+        RSA
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crypto/RSA/CopperSmith/" title="CopperSmith" class="md-nav__link">
+      CopperSmith
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-3" type="checkbox" id="nav-4-3">
+    
+    <label class="md-nav__link" for="nav-4-3">
+      数字签名
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-3">
+        数字签名
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crypto/sign/DSA/" title="DSA" class="md-nav__link">
+      DSA
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-4" type="checkbox" id="nav-4-4">
+    
+    <label class="md-nav__link" for="nav-4-4">
+      分组加密相关
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-4">
+        分组加密相关
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crypto/block/padding/" title="padding" class="md-nav__link">
+      padding
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+    
+    <label class="md-nav__link" for="nav-5">
+      Pwn
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Pwn
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../stack-hijack/" title="stack hijack" class="md-nav__link">
+      stack hijack
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../syscall/" title="syscall" class="md-nav__link">
+      syscall
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../unsorted-bin/" title="heap/unsorted bin" class="md-nav__link">
+      heap/unsorted bin
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        IDA IDApython
+      </label>
+    
+    <a href="./" title="IDA IDApython" class="md-nav__link md-nav__link--active">
+      IDA IDApython
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#idapython" title="IDApython" class="md-nav__link">
+    IDApython
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idapython_1" title="安装 IDApython" class="md-nav__link">
+    安装 IDApython
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" title="一些脚本" class="md-nav__link">
+    一些脚本
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-01" title="example 01" class="md-nav__link">
+    example 01
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idc-wait" title="idc Wait()" class="md-nav__link">
+    idc Wait()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-02" title="example 02" class="md-nav__link">
+    example 02
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idc-locbyname" title="idc LocByName" class="md-nav__link">
+    idc LocByName
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idatils-coderefsto" title="idatils CodeRefsTo" class="md-nav__link">
+    idatils CodeRefsTo
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-03" title="example 03" class="md-nav__link">
+    example 03
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idc-getmembername" title="idc GetMemberName" class="md-nav__link">
+    idc GetMemberName
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idc-getmembersize" title="idc GetMemberSize" class="md-nav__link">
+    idc GetMemberSize
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" title="其他函数" class="md-nav__link">
+    其他函数
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" title="实例" class="md-nav__link">
+    实例
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" title="参考" class="md-nav__link">
+    参考
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#idapython" title="IDApython" class="md-nav__link">
+    IDApython
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idapython_1" title="安装 IDApython" class="md-nav__link">
+    安装 IDApython
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" title="一些脚本" class="md-nav__link">
+    一些脚本
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-01" title="example 01" class="md-nav__link">
+    example 01
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idc-wait" title="idc Wait()" class="md-nav__link">
+    idc Wait()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-02" title="example 02" class="md-nav__link">
+    example 02
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idc-locbyname" title="idc LocByName" class="md-nav__link">
+    idc LocByName
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idatils-coderefsto" title="idatils CodeRefsTo" class="md-nav__link">
+    idatils CodeRefsTo
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-03" title="example 03" class="md-nav__link">
+    example 03
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idc-getmembername" title="idc GetMemberName" class="md-nav__link">
+    idc GetMemberName
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idc-getmembersize" title="idc GetMemberSize" class="md-nav__link">
+    idc GetMemberSize
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" title="其他函数" class="md-nav__link">
+    其他函数
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" title="实例" class="md-nav__link">
+    实例
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" title="参考" class="md-nav__link">
+    参考
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/10-0-0-55/10-0-0-55.github.io/tree/mkdocs/docs/pwn/IDApython.md" title="编辑此页" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="ida-idapython">IDA 强大的插件 IDApython<a class="headerlink" href="#ida-idapython" title="Permanent link">&para;</a></h1>
+<p>idc 和 IDApython 帮助分析者利用与 IDA 进行交互，得到自动化分析程序的结果</p>
+<h2 id="idapython">IDApython<a class="headerlink" href="#idapython" title="Permanent link">&para;</a></h2>
+<p>IDApython 的安装可以很容易在网上查到，但是对于 IDApython 教程的资料除了看到的一个官方文档以外没看到特别多特别好的资料，于是想稍微记录一下自己搞 IDApython 遇到的一些坑和 IDApython 常用的函数 (希望学弟和学妹明年做的时候不会没资料 =.=</p>
+<h3 id="idapython_1">安装 IDApython<a class="headerlink" href="#idapython_1" title="Permanent link">&para;</a></h3>
+<p>首先确认自己的 IDApython 是否装好了，有两种办法。</p>
+<p>一种从 IDA 上面的 File-&gt;Script Command 打开之后看 Scripting language 是否是存在 IDC 和 Python， 然后可以测试一下库是否全，基本上可以利用一个小脚本检测 import 库是否会报错</p>
+<div class="codehilite"><pre><span></span>import idaapi
+import idc
+import idautils
+
+if __name__ == &quot;__main__&quot;:
+    fp = open(&quot;Test.txt&quot;, &quot;w&quot;)
+    fp.write(&quot;Success\n&quot;)
+    fp.close()
+</pre></div>
+
+<p>当然运行脚本的时候需要用 IDA 打开一个随便的文件，然后运行完脚本可以在那个文件的那一层里面多出来一个 Test.txt 文件，里面写着 <code>Success</code> 就说明没问题，否则库就是没装全</p>
+<p>另外一种办法就是在 IDA 最下面有一个 Output window 下面有一个可选的，查看是否存在 IDC 和 Python，在里面选 Python 然后尝试 import 三个库就可以了，没报错就没问题。<code>import</code> 一个不存在的库试一下 <code>import requests</code> 就会发现报错</p>
+<p>(如果没安装好，可以直接查询吾爱破解 IDA 7.0 可以看到一个已经绿色版+配好 Python 的 IDA</p>
+<h3 id="_1">一些脚本<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<p>下面是我看到的一些脚本，我拿到本地测试过能跑的</p>
+<h4 id="example-01">example 01<a class="headerlink" href="#example-01" title="Permanent link">&para;</a></h4>
+<p>打印全部函数的名字</p>
+<div class="codehilite"><pre><span></span># -*- coding: utf-8 -*-
+from idaapi import *
+from idautils import *
+import idc
+
+idc.Wait()              # 单线程的感觉，分析完一个之后才会运行后续脚本
+ea = BeginEA()          # 找到程序 _start (针对 ELF 而言)　返回是 &lt;type &#39;long&#39;&gt;
+
+fp = open(&quot;Z:\\home\\vangelis\\Desktop\\rop_fun_output.txt&quot;, &quot;w&quot;)
+fp.write(&quot;check\n&quot;)
+
+idx = 0
+
+# 在.text段中 SegStart() 找到程序地址最小的汇编指令的地址，SegEnd() 找到程序地址最大的汇编指令的地址
+
+for funcea in Functions(SegStart(ea), SegEnd(ea)):  # Functions() 返回为 &lt;type &#39;generator&#39;&gt;
+    functionName = GetFunctionName(funcea)          # funcea 类型为　&lt;type &#39;long&#39;&gt;  为地址 GetFunctionName() 将地址转换为函数名
+    fp.write(&quot;%d &quot; % idx)
+    fp.write(functionName + &quot;\n&quot;)
+    idx += 1
+
+fp.close()
+idc.Exit(0)             # 在脚本运行结束之后能够自动关闭 IDA
+</pre></div>
+
+<h5 id="idc-wait">idc Wait()<a class="headerlink" href="#idc-wait" title="Permanent link">&para;</a></h5>
+<div class="codehilite"><pre><span></span>Wait():
+$ grep -H &quot;Wait&quot; ./*.py
+./idc_bc695.py:def Wait(): return auto_wait()
+
+idc.py 
+ 412   │ def auto_wait():
+ 413   │     &quot;&quot;&quot;
+ 414   │     Process all entries in the autoanalysis queue
+ 415   │     Wait for the end of autoanalysis
+ 416   │ 
+ 417   │     @note:    This function will suspend execution of the calling script
+ 418   │             till the autoanalysis queue is empty.
+ 419   │     &quot;&quot;&quot;
+ 420   │     return ida_auto.auto_wait()
+</pre></div>
+
+<p>在 IDA 文件里面用 powershell 打开，运行 <code>.\ida.exe -c -S"test.py" input_file</code> 即可， -c -S 是两个参数，</p>
+<p>然后我神经刀，跑到 linux 里面来试行不行，我的 IDA 放在 ~/ 目录下，然后运行脚本的时候开始报错，后来觉得是因为用的 wine 调用的 ida.exe 所以在 -S 里面还是要用 windows 下反斜杠而不是斜杠 
+<div class="codehilite"><pre><span></span># vangelis @ vangelis-PC in ~/IDA [22:47:42] C:2
+$ ./ida.exe -c -S&quot;.\Vangelis\test.py&quot; ~/Desktop/Analysis_File/rop/rop
+</pre></div>
+同时在脚本里面也是要用映射过去的地址，所以用的 <code>Z:\\home\\vangelis\\Desktop\\rop_fun_output.txt</code> </p>
+<p>后来再改进一下，变成了 <code>nohup ./ida.exe -c -S".\Vangelis\test.py" ~/Desktop/Analysis_File/rop/rop &gt; outfile 2&gt;&amp;1 &amp;</code> 把标准输出和错误全部输出到 outfile 文件中</p>
+<p>再后来觉得每次开 IDA 十分不舒服就查了一下运行 IDA 的参数，最后用的 <code>-B -S</code>
+<code>-B     batch mode. IDA will generate .IDB and .ASM files automatically</code> 
+因为最后会产生相应的 .idb 或者 .asm 所以最后处理一下，不处理其实也没什么</p>
+<h4 id="example-02">example 02<a class="headerlink" href="#example-02" title="Permanent link">&para;</a></h4>
+<p>寻找危险函数的被引用的地址</p>
+<div class="codehilite"><pre><span></span># -*- coding: utf-8 -*-
+from idaapi import *
+from idautils import *
+import idc
+
+idc.Wait()
+danger_funcs = [&quot;strcpy&quot;, &quot;read&quot;, &quot;gets&quot;]
+
+fp = open(&quot;Z:\\home\\vangelis\\Desktop\\Analysis_File\\rop\\rop_danger_call.txt&quot;, &quot;w&quot;)
+fp.write(&quot;check\n&quot;)
+
+for func in danger_funcs :
+    fp.write(&quot;#############\n&quot;)
+    fp.write(func + &quot;\n&quot;)
+    addr = LocByName(func)
+    if addr != BADADDR:
+        cross_regs = CodeRefsTo(addr, 0)
+        for ref in cross_regs:
+            fp.write(str(hex(ref)) + &quot;\n&quot;)
+
+fp.close()
+idc.Exit(0)
+</pre></div>
+
+<h5 id="idc-locbyname">idc LocByName<a class="headerlink" href="#idc-locbyname" title="Permanent link">&para;</a></h5>
+<p>经过尝试 LocByName 函数存在则返回函数地址，否则返回 0xffffffff (32位) 而 BADADDR 就是 0xffffffff (32位)
+<div class="codehilite"><pre><span></span>Python&gt;hex(BADADDR)
+0xffffffffL
+Python&gt;hex(LocByName(&quot;ABCD&quot;))
+0xffffffffL
+
+$ grep -H &quot;LocByName&quot; ./*.py
+./idc_bc695.py:def LocByName(name): return get_name_ea_simple(name)
+
+$ grep -H &quot;get_name_ea_simple&quot; ./*.py
+./idc.py:def get_name_ea_simple(name):
+
+1879   │ def get_name_ea_simple(name):
+1880   │     &quot;&quot;&quot;
+1881   │     Get linear address of a name
+1882   │ 
+1883   │     @param name: name of program byte
+1884   │ 
+1885   │     @return: address of the name
+1886   │              BADADDR - No such name
+1887   │     &quot;&quot;&quot;
+1888   │     return ida_name.get_name_ea(BADADDR, name)
+
+  72   │ __EA64__ = ida_idaapi.BADADDR == 0xFFFFFFFFFFFFFFFFL
+  73   │ WORDMASK = 0xFFFFFFFFFFFFFFFF if __EA64__ else 0xFFFFFFFF
+</pre></div></p>
+<h5 id="idatils-coderefsto">idatils CodeRefsTo<a class="headerlink" href="#idatils-coderefsto" title="Permanent link">&para;</a></h5>
+<p>找到 to 该地址的一个列表
+<div class="codehilite"><pre><span></span>Python&gt;CodeRefsTo(0x806d290L, 0)
+&lt;generator object refs at 0x000000000C26B2D0&gt;
+
+  68   │ def CodeRefsFrom(ea, flow):
+  69   │     &quot;&quot;&quot;
+  70   │     Get a list of code references from &#39;ea&#39;
+  71   │
+  72   │     @param ea:   Target address
+  73   │     @param flow: Follow normal code flow or not
+  74   │     @type  flow: Boolean (0/1, False/True)
+  75   │
+  76   │     @return: list of references (may be empty list)
+  77   │
+  78   │     Example::
+  79   │
+  80   │         for ref in CodeRefsFrom(get_screen_ea(), 1):
+  81   │             print ref
+  82   │     &quot;&quot;&quot;
+  83   │     if flow == 1:
+  84   │         return refs(ea, ida_xref.get_first_cref_from, ida_xref.get_next_cref_from)
+  85   │     else:
+  86   │         return refs(ea, ida_xref.get_first_fcref_from, ida_xref.get_next_fcref_from)
+</pre></div></p>
+<h4 id="example-03">example 03<a class="headerlink" href="#example-03" title="Permanent link">&para;</a></h4>
+<p>打印函数栈中的局部变量</p>
+<div class="codehilite"><pre><span></span>from idaapi import *
+from idautils import *
+import idc
+import types
+
+if __name__ == &quot;__main__&quot;:
+    idc.Wait()
+    fp = open(&quot;Z:\\home\\vangelis\\Desktop\\Analysis_File\\rop\\stack-member.txt&quot;, &quot;w&quot;)
+    fp.write(&quot;check\n&quot;)
+
+    ea = BeginEA()
+    for func in Functions(SegStart(ea), SegEnd(ea)):
+        funcName = GetFunctionName(func)
+        #  if(funcName != &quot;overflow&quot;):
+            #  continue
+        fp.write(&quot;###############\n&quot;)
+        fp.write(&quot;Function Name is %s\n&quot; % funcName)
+
+        stack_frame = GetFrame(func)
+        frame_size = GetStrucSize(stack_frame)
+
+        fp.write(&quot;frame_size: %d\n&quot; % frame_size)
+
+        frame_counter = 0
+
+        while frame_counter &lt; frame_size:
+            stack_var = GetMemberName(stack_frame, frame_counter)
+            if type(stack_var) == type(&#39;a&#39;):
+                fp.write(&quot;[*] Function:%s -&gt; Stack Variable:%s(%d bytes)\n&quot; % (funcName, stack_var, GetMemberSize(stack_frame, frame_counter)))
+                try :
+                    frame_counter = frame_counter + GetMemberSize(stack_frame, frame_counter)
+                except:
+                    frame_counter += 1
+            else :
+                frame_counter += 1
+
+    fp.close()
+    idc.Exit(0)
+</pre></div>
+
+<p>注： stack frame 是从某一函数的 参数到栈顶 之间全部内容</p>
+<h5 id="idc-getmembername">idc GetMemberName<a class="headerlink" href="#idc-getmembername" title="Permanent link">&para;</a></h5>
+<p>通过 stack id 和 offset 得到变量的名字
+<div class="codehilite"><pre><span></span>Python&gt;stack = GetFrame(0x804887c) # &quot;overflow&quot; function&#39;s address
+Python&gt;hex(stack)
+0xff00006cL
+Python&gt;GetMemberName(stack, 0xc)
+var_C
+
+$ grep -H &quot;GetMemberName&quot; ./*.py
+./idc_bc695.py:def GetMemberName(id, member_offset): return get_member_name(id, member_offset)
+
+5092   │ def get_member_name(sid, member_offset):
+5093   │     &quot;&quot;&quot;
+5094   │     Get name of a member of a structure
+5095   │
+5096   │     @param sid: structure type ID
+5097   │     @param member_offset: member offset. The offset can be
+5098   │                           any offset in the member. For example,
+5099   │                           is a member is 4 bytes long and starts
+5100   │                           at offset 2, then 2,3,4,5 denote
+5101   │                           the same structure member.
+5102   │
+5103   │     @return: None if bad structure type ID is passed
+5104   │              or no such member in the structure
+5105   │              otherwise returns name of the specified member.
+5106   │     &quot;&quot;&quot;
+5107   │     s = ida_struct.get_struc(sid)
+5108   │     if not s:
+5109   │         return None
+5110   │
+5111   │     m = ida_struct.get_member(s, member_offset)
+5112   │     if not m:
+5113   │         return None
+5114   │
+5115   │     return ida_struct.get_member_name(m.id)
+</pre></div></p>
+<h5 id="idc-getmembersize">idc GetMemberSize<a class="headerlink" href="#idc-getmembersize" title="Permanent link">&para;</a></h5>
+<p>得到一个变量的结构所占字节数
+<div class="codehilite"><pre><span></span>5146   │ def get_member_size(sid, member_offset):
+5147   │     &quot;&quot;&quot;
+5148   │     Get size of a member
+5149   │
+5150   │     @param sid: structure type ID
+5151   │     @param member_offset: member offset. The offset can be
+5152   │                           any offset in the member. For example,
+5153   │                           is a member is 4 bytes long and starts
+5154   │                           at offset 2, then 2,3,4,5 denote
+5155   │                           the same structure member.
+5156   │
+5157   │     @return: None if bad structure type ID is passed,
+5158   │              or no such member in the structure
+5159   │              otherwise returns size of the specified
+5160   │              member in bytes.
+5161   │     &quot;&quot;&quot;
+5162   │     s = ida_struct.get_struc(sid)
+5163   │     if not s:
+5164   │         return None
+5165   │
+5166   │     m = ida_struct.get_member(s, member_offset)
+5167   │     if not m:
+5168   │         return None
+5169   │
+5170   │     return ida_struct.get_member_size(m)
+
+
+5173   │ def get_member_flag(sid, member_offset):
+5174   │     &quot;&quot;&quot;
+5175   │     Get type of a member
+</pre></div></p>
+<h4 id="_2">其他函数<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span>取值
+Byte(ea) Word(ea) Dword(ea) Qword(ea) GetFloat(ea) GetDouble(ea)
+GetManyBytes(ea, size, use_dbg = False)
+GetString(ea, length = -1, strtype = STRTYPE_C)
+
+GetFlags(ea).isCode() / .isData() / .isUnknown()
+
+数据或代码的 to / from
+DataRefsTo(ea) DataRefsFrom(ea) | XrefsTo(ea, flag=0) XrefsFrom(ea, flag=0) / CodeRefsTo(ea, flag=0) CodeRefsFrom(ea, flag=0) 
+
+分割函数中指令地址
+FuncItems(start) 一般和 GetDisasm() 一起使用
+
+ 317   │ def FuncItems(start):
+ 318   │     &quot;&quot;&quot;
+ 319   │     Get a list of function items
+ 320   │ 
+ 321   │     @param start: address of the function
+ 322   │ 
+ 323   │     @return: ea of each item in the function
+ 324   │     &quot;&quot;&quot;
+ 325   │     func = ida_funcs.get_func(start)
+ 326   │     if not func:
+ 327   │         return
+ 328   │     fii = ida_funcs.func_item_iterator_t()
+ 329   │     ok = fii.set(func)
+ 330   │     while ok:
+ 331   │         yield fii.current()
+ 332   │         ok = fii.next_code()
+
+反汇编
+GetDisasm(ea)
+
+Patch 文件
+PatchByte(ea, value) PatchWord(ea, value) PatchDword(ea, value)
+
+取当前地址
+here() ScreenEA()
+</pre></div>
+
+<h3 id="_3">实例<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>下午写了一个用来查某些函数中的库函数调用的脚本
+该查询了一下 main 函数和 main 函数开启线程中函数的调用，发现了一个很强的函数 <code>GetDisasm()</code> 可以将 IDA 中分析结果也打印出来，意思就是 比如 <code>call esi</code> ，在<code>GetDisasm()</code>会打印<code>call esi ; Function</code> 这样写分析脚本起来就很容易，以下脚本是放在 IDA 中跑的，所以没加 <code>idc.Wait()</code> 和 <code>idc.Exit(0)</code></p>
+<p>实例的题目我放在 github 上面了
+<a href="https://github.com/Vang3lis/Windows-malware/tree/master/Lab_03/Chapter_5L">Lab05</a>
+<div class="codehilite"><pre><span></span># -*- coding: utf-8 -*-
+
+from idaapi import *
+from idautils import *
+import idc
+
+# github idapython ex_import.py
+def Enum_Import_WinApi():
+    def imp_cb(ea, name, offset):
+        if name:
+            WinApiDir[ea] = name
+        # True -&gt; Continue enumeration
+        # False -&gt; Stop enumeration
+        return True
+
+    WinApiDir = {}
+    WinDll = [&#39;&#39;]
+    nimps = get_import_module_qty()
+    for i in xrange(0, nimps):
+        name = get_import_module_name(i)
+
+        enum_import_names(i, imp_cb)
+
+    return WinApiDir
+
+def AddAddr(CalledAddr, CallWinApi, WinApiDir, CalledName=&quot;&quot;):
+    if CalledAddr != 0:
+        CalledName = WinApiDir[CalledAddr]
+
+    if CalledName not in CallWinApi:    # 如果 CallWinApi 里面没有，就添加
+        CallWinApi.append(CalledName)
+
+&#39;&#39;&#39;
+def SearchFunc(addr):                   # 原本想用作向上查找 mov 的函数，但是发现 GetDisasm 是个神仙函数
+    return
+&#39;&#39;&#39;
+
+def SearchWinApi(ea, CallWinApi, WinApiDir):
+    for addr in FuncItems(ea):
+        if GetMnem(addr) == &quot;call&quot;:                 # 判断指令是否为 call
+            CalledAddr = GetOperandValue(addr, 0)        # 得到被 call 函数地址
+            #  print(GetDisasm(addr))
+            #  print(GetOpnd(addr, 0))
+
+            if CalledAddr in WinApiDir.keys():      # 如果函数地址在枚举的 WinApiDir 里面就尝试添加
+                AddAddr(CalledAddr, CallWinApi, WinApiDir)
+
+            else:                                   # 系统函数跳转一步才到结果 例如 strlen: jmp ds:__imp_strlen
+                if GetMnem(CalledAddr) == &quot;jmp&quot;:
+                    CalledAddr = GetOperandValue(CalledAddr, 0)
+                    AddAddr(CalledAddr, CallWinApi, WinApiDir)
+
+                else :
+                    op = GetOpnd(addr, 0)
+                    if op == &#39;esi&#39; or op == &#39;ebx&#39; or op == &#39;eax&#39; or op == &#39;ebp&#39;:
+                        &#39;&#39;&#39;
+                        可以不必这么写，因为 GetDisasm 会将 IDA 分析的 esi ebx eax ebp 打印出来
+                        if op == &#39;ebp&#39;:             # 查看源码发现 op == ebp 时 只有调用 closesocket 的时候
+                            if &#39;closesocket&#39; in CallWinApi:
+                                return
+                            else :
+                                CallWinApi.append(&#39;closesocket&#39;)
+                        else :                      # 向上查找 mov 指令
+                        &#39;&#39;&#39;
+                        disasm = GetDisasm(addr)
+                        CalledName = disasm[disasm.find(&quot;;&quot;)+1:]
+                        AddAddr(0, CallWinApi, WinApiDir, CalledName)
+
+
+
+if __name__ == &quot;__main__&quot;:
+    Main = [0x1000D02E]
+    sub_func = [0x10001074, 0x10001365, 0x10001656]
+    WinApiDir = {}
+    CallWinApi = []
+    flag = 1
+
+    WinApiDir = Enum_Import_WinApi()
+    #  print(WinApiDir)
+
+    if flag :
+        for ea in Main:
+            SearchWinApi(ea, CallWinApi, WinApiDir)
+    else:
+        for ea in sub_func:
+            SearchWinApi(ea, CallWinApi, WinApiDir)
+
+    print(CallWinApi)
+</pre></div></p>
+<h2 id="_4">参考<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>脚本 | <a href="https://blog.csdn.net/ojshilu/article/details/12905405">https://blog.csdn.net/ojshilu/article/details/12905405</a> <br/>
+博客 | <a href="https://blog.csdn.net/qq1084283172/article/details/64130118">https://blog.csdn.net/qq1084283172/article/details/64130118</a> <br/>
+part1-6 | <a href="https://unit42.paloaltonetworks.com/using-idapython-to-make-your-life-easier-part-1/">https://unit42.paloaltonetworks.com/using-idapython-to-make-your-life-easier-part-1/</a> <br/>
+官方文档| <a href="https://www.hex-rays.com/products/ida/support/idapython_docs/">https://www.hex-rays.com/products/ida/support/idapython_docs/</a> <br/></p>
+</blockquote>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../unsorted-bin/" title="heap/unsorted bin" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  后退
+                </span>
+                heap/unsorted bin
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.2ba8dec4.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+                <script src="../../assets/javascripts/lunr/tinyseg.js"></script>
+              
+              
+                <script src="../../assets/javascripts/lunr/lunr.ja.js"></script>
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+    
+  </body>
+</html>

