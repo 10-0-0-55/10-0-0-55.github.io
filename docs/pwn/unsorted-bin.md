@@ -37,11 +37,13 @@ _int_malloc (mstate av, size_t bytes)       // mstate 为 main_arena 结构体
 			mchunkptr next = chunk_at_offset (victim, size);
 			
 			...
+			/ *  glibc2.27 add the check  glibc2.23 doesn't have this check
 			if (__glibc_unlikely (bck->fd != victim)
 				|| __glibc_unlikely (victim->fd != unsorted_chunks (av)))
 			  malloc_printerr ("mallloc(): unsorted double linked list corrupted");
 			if (__libc_unlikely (prev_inuse (next)))
 			  malloc_printerr ("malloc(): invalid next->prev_inuse (unsorted)");
+			*/
 			
 			// if a small request , try to ues last remainder if it is the only chunk in unosrted bin.
 			if (in_samllbin_range (nb) && 
